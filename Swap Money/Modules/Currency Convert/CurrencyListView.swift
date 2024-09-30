@@ -9,17 +9,12 @@ import SwiftUI
 
 struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
-    
     @State private var inputValue: String = "1"
-    @State private var rates: [String: Double] = [
-        "USD": 1.0, "EUR": 0.85, "JPY": 110.0, "GBP": 0.75, "INR": 74.0, // Sample rates
-        "CAD": 1.2, "AUD": 1.35, "CHF": 0.92
-    ]
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack() {
             // Input Bar
-            HStack(spacing: 0) {
+            HStack() {
                 // Input TextField
                 TextField("Enter amount", text: $inputValue)
                     .keyboardType(.decimalPad)
@@ -49,7 +44,7 @@ struct CurrencyListView: View {
                             viewModel.toggleFavourite(for: currency)
                         },
                         reverseCurrencyAction: {
-                            self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))" 
+                            self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))"
                         }
                     )
                 }
