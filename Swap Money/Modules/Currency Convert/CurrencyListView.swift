@@ -11,7 +11,6 @@ struct CurrencyListView: View {
     @State var viewModel: CurrencyConvertVM!
     
     @State private var inputValue: String = "100" // Default input value
-    @State private var baseCurrency: String = "USD"
     @State private var pinnedCurrencies: Set<String> = [] // Holds pinned currencies
     @State private var rates: [String: Double] = [
         "USD": 1.0, "EUR": 0.85, "JPY": 110.0, "GBP": 0.75, "INR": 74.0, // Sample rates
@@ -31,7 +30,7 @@ struct CurrencyListView: View {
                     .frame(maxWidth: .infinity)
 
                 // Base Currency Capsule
-                Text(baseCurrency)
+                Text(viewModel.baseCurrency)
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -45,15 +44,13 @@ struct CurrencyListView: View {
                 ForEach(pinnedAndUnpinnedCurrencies(), id: \.self) { currency in
                     CurrencyRowView(
                         currency: currency,
-                        baseCurrency: baseCurrency,
                         isPinned: pinnedCurrencies.contains(currency),
-                        value: Double(inputValue) ?? 0.0,
-                        rate: rates[currency] ?? 1.0,
+                        amount: Double(inputValue) ?? 0.0,
                         pinAction: {
                             togglePin(for: currency)
                         },
                         reverseCurrencyAction: {
-                            baseCurrency = currency
+                            viewModel.updateBaseCurrency(with: currency)
                         }
                     )
                 }
@@ -80,10 +77,8 @@ struct CurrencyListView: View {
 
 struct CurrencyRowView: View {
     var currency: String
-    var baseCurrency: String
     var isPinned: Bool
-    var value: Double
-    var rate: Double
+    var amount: Double
     var pinAction: () -> Void
     var reverseCurrencyAction: () -> Void
     
@@ -105,7 +100,7 @@ struct CurrencyRowView: View {
             Spacer()
             
             // Converted Currency Value
-            Text(String(format: "%.2f", convertedValue))
+            Text(String(format: "%.2f", amount))
                 .font(.title3)
                 .padding(.trailing, 8)
             
@@ -122,11 +117,6 @@ struct CurrencyRowView: View {
         }
     }
     
-    // Computed property to calculate the converted value
-    private var convertedValue: Double {
-        guard rate != 0 else { return 0 }
-        return value / rate
-    }
     
 }
 
