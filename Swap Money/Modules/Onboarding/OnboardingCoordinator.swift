@@ -36,7 +36,7 @@ class OnboardingCoordinator: Coordinator {
     }
     
     func onboardUser() {
-        
+        AppFlowStarter.shared.replaceFlow(with: .currencyConvert)
     }
     
     

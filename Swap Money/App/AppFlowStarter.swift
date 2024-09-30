@@ -19,15 +19,14 @@ final class AppFlowStarter {
     
     static let shared = AppFlowStarter()
     
+    private let navigationController = UINavigationController()
+    
     @MainActor
     func setup(
         path: FlowPath,
-        with rootCoordinator: inout Coordinator?,
         in window: UIWindow?
     ) {
-        let navigationController = UINavigationController()
         window?.rootViewController = navigationController
-        
         let coordinator: Coordinator?
         
         switch path{
@@ -45,6 +44,12 @@ final class AppFlowStarter {
         
         coordinator?.start()
         
+    }
+    
+    @MainActor
+    func replaceFlow(with flowPath: FlowPath) {
+        navigationController.popViewController(animated: false)
+        self.setup(path: flowPath, in: nil)
     }
 }
 
