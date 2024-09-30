@@ -29,7 +29,7 @@ struct UserSettings {
     @UserDefault(key: "preferredCurrency", defaultValue: "USD")
     static var preferredCurrency: String
     
-    @UserDefault(key: "favourites", defaultValue: [])
+    @UserDefault(key: "favourites", defaultValue: ["JPY", "INR", "USD"])
     static var favouriteCurrencies: [String]
     
     

@@ -12,9 +12,9 @@ struct CurrencyListView: View {
     @State private var inputValue: String = "1"
     
     var body: some View {
-        VStack() {
+        VStack(spacing: 0) {
             // Input Bar
-            HStack() {
+            HStack(spacing: 0) {
                 // Input TextField
                 TextField("Enter amount", text: $inputValue)
                     .keyboardType(.decimalPad)
@@ -82,9 +82,8 @@ struct CurrencyRowView: View {
             Spacer()
             
             // Converted Currency Value
-            Text(String(format: "%.2f", amount))
+            Text(amount, format: .currency(code: currency))
                 .font(.title3)
-                .padding(.trailing, 8)
             
             // Reverse Base Currency Button (Emoji Style)
             Button(action: reverseCurrencyAction) {
