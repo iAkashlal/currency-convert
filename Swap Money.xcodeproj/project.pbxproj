@@ -160,8 +160,8 @@
 		F809ABC52CAA809E007923B9 /* Currency Convert */ = {
 			isa = PBXGroup;
 			children = (
-				F809ABC32CAA809E007923B9 /* CurrencyConvertVM.swift */,
 				F809ABC42CAA809E007923B9 /* CurrencyListView.swift */,
+				F809ABC32CAA809E007923B9 /* CurrencyConvertVM.swift */,
 				F809ABC22CAA809E007923B9 /* CurrencyConvertCoordinator.swift */,
 			);
 			path = "Currency Convert";
@@ -170,9 +170,9 @@
 		F809ABC92CAA809E007923B9 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				F809ABC62CAA809E007923B9 /* OnboardingCoordinator.swift */,
 				F809ABC72CAA809E007923B9 /* OnboardingView.swift */,
 				F809ABC82CAA809E007923B9 /* OnboardingVM.swift */,
+				F809ABC62CAA809E007923B9 /* OnboardingCoordinator.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
