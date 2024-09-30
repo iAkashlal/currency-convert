@@ -86,16 +86,25 @@ final class CurrencySDK: CurrencyService {
     
     func updateCurrenciesAvailable() {
         defer {
-            self.delegate?.updatedRatesAvailable()
+            notifyObserverAboutUpdatedRates()
         }
         var newCurrencies = [String]()
         self.rates.forEach { currency, _ in
             newCurrencies.append(currency)
         }
+        newCurrencies.sort()
         if self.currencies != newCurrencies {
             self.currencies = newCurrencies
             
         }
+    }
+    
+    func notifyObserverAboutUpdatedRates() {
+        guard let delegate else {
+            Logger.sharedInstance.log(message: "Delegate to observe changes not available")
+            return
+        }
+        delegate.updatedRatesAvailable()
     }
     
     func convert(from: String, to: String, value: Double) -> Double {
