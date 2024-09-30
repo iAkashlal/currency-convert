@@ -22,7 +22,7 @@ class CurrencyConvertCoordinator: Coordinator {
     func start() {
         let currencyConvertVM = CurrencyConvertVM(coordinator: self)
         
-        let currencyConvertView = OnboardingView()
+        let currencyConvertView = CurrencyListView(viewModel: currencyConvertVM)
         
         guard let navigationController else {
             Logger.sharedInstance.log(message: "Navigation Controller not setup properly \(#file)")
