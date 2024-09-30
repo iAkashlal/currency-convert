@@ -49,7 +49,7 @@ struct CurrencyListView: View {
                             viewModel.toggleFavourite(for: currency)
                         },
                         reverseCurrencyAction: {
-                            viewModel.updateBaseCurrency(with: currency)
+                            self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))" 
                         }
                     )
                 }
@@ -57,21 +57,7 @@ struct CurrencyListView: View {
         }
     }
     
-//    // Function to toggle pin/unpin currencies
-//    private func togglePin(for currency: String) {
-//        if pinnedCurrencies.contains(currency) {
-//            pinnedCurrencies.remove(currency)
-//        } else {
-//            pinnedCurrencies.insert(currency)
-//        }
-//    }
     
-    // Function to return pinned currencies at the top followed by unpinned
-//    private func pinnedAndUnpinnedCurrencies() -> [String] {
-//        let unpinnedCurrencies = rates.keys.filter { !pinnedCurrencies.contains($0) }.sorted()
-//        let pinnedCurrencyArray = pinnedCurrencies.sorted()
-//        return
-//    }
 }
 
 struct CurrencyRowView: View {
@@ -88,6 +74,8 @@ struct CurrencyRowView: View {
                 Image(systemName: isPinned ? "pin.fill" : "pin")
                     .foregroundColor(isPinned ? .yellow : .gray)
             }
+            .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
+
             
             // Currency Code
             Text(currency)
@@ -113,11 +101,13 @@ struct CurrencyRowView: View {
                     .clipShape(Circle())
                     .foregroundColor(.white)
             }
+            .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
+
         }
+        .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
     }
-    
-    
 }
+
 
 struct RoundedCornersShape: Shape {
     var radius: CGFloat = 10.0

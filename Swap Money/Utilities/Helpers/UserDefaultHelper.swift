@@ -23,10 +23,14 @@ struct UserDefault<T> {
 }
 
 struct UserSettings {
-    @UserDefault(key: "preferredCurrency", defaultValue: "USD")
-    static var preferredCurrency: String
-
     @UserDefault(key: "hasSeenOnboarding", defaultValue: false)
     static var hasSeenOnboarding: Bool
-
+    
+    @UserDefault(key: "preferredCurrency", defaultValue: "USD")
+    static var preferredCurrency: String
+    
+    @UserDefault(key: "favourites", defaultValue: [])
+    static var favouriteCurrencies: [String]
+    
+    
 }
