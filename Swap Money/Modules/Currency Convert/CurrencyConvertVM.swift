@@ -9,7 +9,7 @@ import Foundation
 
 final class CurrencyConvertVM: ObservableObject {
     var coordinator: Coordinator?
-    var currencyService: CurrencyService?
+    var currencyService: ExchangeRateService?
     
     @Published var baseCurrency: String = "USD"
     
@@ -19,9 +19,9 @@ final class CurrencyConvertVM: ObservableObject {
     
     private var favourites: [String] = []
     
-    init(coordinator: Coordinator?, currencyService: CurrencyService?) {
+    init(coordinator: Coordinator?, currencyService: ExchangeRateService?) {
         self.coordinator = coordinator
-        self.currencyService = currencyService ?? CurrencySDK(vendor: .openExchangeRates)
+        self.currencyService = currencyService ?? ExchangeRateSDK(vendor: .openExchangeRates)
         
         self.setup()
     }
@@ -84,7 +84,7 @@ final class CurrencyConvertVM: ObservableObject {
     
 }
 
-extension CurrencyConvertVM: CurrencySDKDelegate {
+extension CurrencyConvertVM: ExchangeRateSDKDelegate {
     @MainActor
     func updatedRatesAvailable() {
         self.updateCurrencies()

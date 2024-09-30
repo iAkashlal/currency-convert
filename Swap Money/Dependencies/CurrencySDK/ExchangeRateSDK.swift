@@ -1,5 +1,5 @@
 //
-//  CurrencySDK.swift
+//  ExchangeRateSDK.swift
 //  Swap Money
 //
 //  Created by Akashlal Bathe on 29/09/24.
@@ -11,22 +11,22 @@ enum CurrencySDKVendors {
     case openExchangeRates
 }
 
-public protocol CurrencySDKDelegate {
+public protocol ExchangeRateSDKDelegate {
     /// Get notified whenever new rates are available
     func updatedRatesAvailable()
 }
 
-public protocol CurrencyService {
+public protocol ExchangeRateService {
     
-    var delegate: CurrencySDKDelegate? { get set }
+    var delegate: ExchangeRateSDKDelegate? { get set }
     
     func convert(from: String, to: String, value: Double) -> Double
     func currenciesAvailableCount() -> Int
     func currenciesAvailable() -> [String]
 }
 
-final class CurrencySDK: CurrencyService {
-    var delegate: (any CurrencySDKDelegate)?
+final class ExchangeRateSDK: ExchangeRateService {
+    var delegate: (any ExchangeRateSDKDelegate)?
     
     private var service: NetworkService<OERResponse>?
     private var persistenceService: LocalPersistence = FilePersistence()
@@ -43,26 +43,37 @@ final class CurrencySDK: CurrencyService {
     }
     
     private var pollingInSeconds = 1799
+    private var pollingService: Pollable
         
     init(vendor: CurrencySDKVendors) {
         self.vendor = vendor
-        setupService()
+        self.pollingService = PollingService(pollingInterval: TimeInterval(pollingInSeconds))
+        setupServices()
     }
     
     func updatePersistenceService(with service: LocalPersistence) {
         self.persistenceService = service
     }
     
-    private func setupService() {
+    private func setupServices() {
         switch self.vendor {
         case .openExchangeRates:
             self.service = OERService()
         }
+        
+        self.updatePollingDuration(in: 1799)    // Setup default polling duration as 1799 ie. 29 minutes 59 seconds
     }
     
     /// Override default polling duration
     func updatePollingDuration(in seconds: Int) {
         self.pollingInSeconds = seconds
+        self.pollingService.stopPolling()
+        self.pollingService = PollingService(pollingInterval: TimeInterval(pollingInSeconds))
+        self.pollingService.startPolling { [unowned self] in
+            Task {
+                await self.loadDataFromRemote()
+            }
+        }
     }
     
     func loadDataLocally() {
@@ -82,8 +93,8 @@ final class CurrencySDK: CurrencyService {
         let currentEpoch = Int(Date().timeIntervalSince1970)
         let timeDifference = currentEpoch - lastUpdatedEpoch
         
-        // Check if the difference is greater than 29 minutes and 59 seconds (1799 seconds)
-        if timeDifference > 1799 {
+        // Check if the difference is greater than set polling duration
+        if timeDifference > pollingInSeconds {
             Task {
                 await loadDataFromRemote()
             }
@@ -151,10 +162,13 @@ final class CurrencySDK: CurrencyService {
         return self.currencies.count
     }
     
+    deinit {
+        self.pollingService.stopPolling()
+    }
     
 }
 
-private extension CurrencySDK {
+private extension ExchangeRateSDK {
     func convertToUSD(from currency: String, value: Double) -> Double {
         guard let rate = rates[currency] else {
             Logger.sharedInstance.log(message: "Invalid Currency code. Tried to convert from \(currency) whose rate is unavailable")

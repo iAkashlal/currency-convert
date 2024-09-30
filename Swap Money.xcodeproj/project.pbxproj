@@ -23,7 +23,7 @@
 		F809ABE82CAA8301007923B9 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDD2CAA8301007923B9 /* NetworkRequest.swift */; };
 		F809ABE92CAA8301007923B9 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDE2CAA8301007923B9 /* NetworkService.swift */; };
 		F809ABEA2CAA8301007923B9 /* OpenExchangeRateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */; };
-		F809ABEB2CAA8301007923B9 /* CurrencySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE22CAA8301007923B9 /* CurrencySDK.swift */; };
+		F809ABEB2CAA8301007923B9 /* ExchangeRateSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */; };
 		F809ABEC2CAA8301007923B9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE42CAA8301007923B9 /* Logger.swift */; };
 		F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABF22CAA84C1007923B9 /* Coordinator.swift */; };
 		F809ABF82CAA84C1007923B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F809ABF42CAA84C1007923B9 /* Assets.xcassets */; };
@@ -31,6 +31,7 @@
 		F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F849068E2CAB17C70034AA3C /* FilePersistence.swift */; };
 		F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906902CAB19110034AA3C /* LocalPersistence.swift */; };
 		F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */; };
+		F84906962CAB22A30034AA3C /* PollingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906952CAB22A30034AA3C /* PollingService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +71,7 @@
 		F809ABDD2CAA8301007923B9 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		F809ABDE2CAA8301007923B9 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenExchangeRateAPI.swift; sourceTree = "<group>"; };
-		F809ABE22CAA8301007923B9 /* CurrencySDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencySDK.swift; sourceTree = "<group>"; };
+		F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeRateSDK.swift; sourceTree = "<group>"; };
 		F809ABE42CAA8301007923B9 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F809ABF22CAA84C1007923B9 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F809ABF42CAA84C1007923B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		F849068E2CAB17C70034AA3C /* FilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePersistence.swift; sourceTree = "<group>"; };
 		F84906902CAB19110034AA3C /* LocalPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistence.swift; sourceTree = "<group>"; };
 		F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultPersistence.swift; sourceTree = "<group>"; };
+		F84906952CAB22A30034AA3C /* PollingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,7 +228,7 @@
 				F809ABDC2CAA8301007923B9 /* Models */,
 				F809ABE02CAA8301007923B9 /* Networking */,
 				F809ABE12CAA8301007923B9 /* Persistence */,
-				F809ABE22CAA8301007923B9 /* CurrencySDK.swift */,
+				F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */,
 			);
 			path = CurrencySDK;
 			sourceTree = "<group>";
@@ -242,6 +244,7 @@
 		F809ABE62CAA8301007923B9 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				F84906942CAB229A0034AA3C /* Polling */,
 				F809ABE32CAA8301007923B9 /* CurrencySDK */,
 				F809ABE52CAA8301007923B9 /* Logger */,
 			);
@@ -288,6 +291,14 @@
 				F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F84906942CAB229A0034AA3C /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				F84906952CAB22A30034AA3C /* PollingService.swift */,
+			);
+			path = Polling;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -429,7 +440,8 @@
 				F809ABCC2CAA809E007923B9 /* CurrencyConvertVM.swift in Sources */,
 				F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */,
 				F809ABD02CAA809E007923B9 /* OnboardingVM.swift in Sources */,
-				F809ABEB2CAA8301007923B9 /* CurrencySDK.swift in Sources */,
+				F84906962CAB22A30034AA3C /* PollingService.swift in Sources */,
+				F809ABEB2CAA8301007923B9 /* ExchangeRateSDK.swift in Sources */,
 				F809ABCB2CAA809E007923B9 /* CurrencyConvertCoordinator.swift in Sources */,
 				F809ABDA2CAA82EA007923B9 /* AppFlowStarter.swift in Sources */,
 				F809ABCF2CAA809E007923B9 /* OnboardingView.swift in Sources */,
