@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class CurrencyConvertVM: ObservableObject {
     var coordinator: Coordinator?
     var currencyService: CurrencyService?
