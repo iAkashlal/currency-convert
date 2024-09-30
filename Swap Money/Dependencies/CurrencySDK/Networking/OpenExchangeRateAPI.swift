@@ -27,7 +27,7 @@ extension OpenExchangeRateAPI: NetworkRequest {
     var path: String {
         switch self {
         case .latest:
-            "latest.json"
+            "/latest.json"
         }
     }
     
