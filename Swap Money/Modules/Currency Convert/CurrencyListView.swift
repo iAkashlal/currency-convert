@@ -54,8 +54,8 @@ struct CurrencyListView: View {
         }
         .navigationTitle("swap.money")
         .onAppear {
-            // After 2 seconds, animate the disappearance of the text
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // After 4 seconds, animate the disappearance of the text
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                 withAnimation {
                     showSwapText = false
                 }
