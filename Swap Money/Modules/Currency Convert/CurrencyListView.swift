@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct CurrencyListView: View {
-    @State var viewModel: CurrencyConvertVM!
+    @StateObject var viewModel: CurrencyConvertVM
     
-    @State private var inputValue: String = "100" // Default input value
-    @State private var pinnedCurrencies: Set<String> = [] // Holds pinned currencies
+    @State private var inputValue: String = "1"
     @State private var rates: [String: Double] = [
         "USD": 1.0, "EUR": 0.85, "JPY": 110.0, "GBP": 0.75, "INR": 74.0, // Sample rates
         "CAD": 1.2, "AUD": 1.35, "CHF": 0.92
@@ -41,13 +40,13 @@ struct CurrencyListView: View {
             
             // List of currencies
             List {
-                ForEach(pinnedAndUnpinnedCurrencies(), id: \.self) { currency in
+                ForEach(viewModel.currencies, id: \.self) { currency in
                     CurrencyRowView(
                         currency: currency,
-                        isPinned: pinnedCurrencies.contains(currency),
-                        amount: Double(inputValue) ?? 0.0,
+                        isPinned: viewModel.isFavourite(currency: currency),
+                        amount: viewModel.getValue(for: currency, value: inputValue),
                         pinAction: {
-                            togglePin(for: currency)
+                            viewModel.toggleFavourite(for: currency)
                         },
                         reverseCurrencyAction: {
                             viewModel.updateBaseCurrency(with: currency)
@@ -58,21 +57,21 @@ struct CurrencyListView: View {
         }
     }
     
-    // Function to toggle pin/unpin currencies
-    private func togglePin(for currency: String) {
-        if pinnedCurrencies.contains(currency) {
-            pinnedCurrencies.remove(currency)
-        } else {
-            pinnedCurrencies.insert(currency)
-        }
-    }
+//    // Function to toggle pin/unpin currencies
+//    private func togglePin(for currency: String) {
+//        if pinnedCurrencies.contains(currency) {
+//            pinnedCurrencies.remove(currency)
+//        } else {
+//            pinnedCurrencies.insert(currency)
+//        }
+//    }
     
     // Function to return pinned currencies at the top followed by unpinned
-    private func pinnedAndUnpinnedCurrencies() -> [String] {
-        let unpinnedCurrencies = rates.keys.filter { !pinnedCurrencies.contains($0) }.sorted()
-        let pinnedCurrencyArray = pinnedCurrencies.sorted()
-        return pinnedCurrencyArray + unpinnedCurrencies
-    }
+//    private func pinnedAndUnpinnedCurrencies() -> [String] {
+//        let unpinnedCurrencies = rates.keys.filter { !pinnedCurrencies.contains($0) }.sorted()
+//        let pinnedCurrencyArray = pinnedCurrencies.sorted()
+//        return
+//    }
 }
 
 struct CurrencyRowView: View {
@@ -133,5 +132,5 @@ struct RoundedCornersShape: Shape {
 }
 
 #Preview {
-    CurrencyListView()
+    CurrencyListView(viewModel: CurrencyConvertVM(coordinator: nil, currencyService: nil))
 }
