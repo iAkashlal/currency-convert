@@ -11,18 +11,28 @@ enum CurrencySDKVendors {
     case openExchangeRates
 }
 
-protocol CurrencySDKDelegate {
+public protocol CurrencySDKDelegate {
     /// Get notified whenever new rates are available
     func updatedRatesAvailable()
 }
 
-final class CurrencySDK {
+public protocol CurrencyService {
+    
+    var delegate: CurrencySDKDelegate? { get set }
+    
+    func convert(from: String, to: String, value: Double) -> Double
+    func currenciesAvailableCount() -> Int
+    func currenciesAvailable() -> [String]
+}
+
+final class CurrencySDK: CurrencyService {
+    var delegate: (any CurrencySDKDelegate)?
     
     private var service: NetworkService<OERResponse>?
     private var vendor: CurrencySDKVendors
-    private var delegate: CurrencySDKDelegate
+    private var lastUpdatedEpoch: Int = 0
     
-    
+    private var currencies: [String] = []
     private var rates: [String: Double] = [:] {
         didSet {
             if rates != oldValue {
@@ -30,12 +40,9 @@ final class CurrencySDK {
             }
         }
     }
-    
-    private var currencies: [String] = []
         
-    init(vendor: CurrencySDKVendors, delegate: CurrencySDKDelegate) {
+    init(vendor: CurrencySDKVendors) {
         self.vendor = vendor
-        self.delegate = delegate
         setupService()
     }
     
@@ -44,11 +51,42 @@ final class CurrencySDK {
         case .openExchangeRates:
             self.service = OERService()
         }
+        
+        loadDataLocally()
+    }
+    
+    func loadDataLocally() {
+        // Load data from local cache
+        
+        
+        let dataOutdated = true // When current data is older than 30 minutes
+        if dataOutdated {
+            Task {
+                await loadDataFromRemote()
+            }
+        }
+    }
+    
+    func loadDataFromRemote() async {
+        // Load data from service, meant to be called once every 30 minutes
+        do {
+            let output = try await service?.fetch(request: OpenExchangeRateAPI.latest.request!)
+            if let (response, urlResponse) = output {
+                self.lastUpdatedEpoch = response.timestamp
+                self.rates = response.rates
+            }
+        } catch {
+            debugPrint(error)
+        }
+    }
+    
+    func saveDataLocally() {
+        // Save data to local store so that cache can be used on next open
     }
     
     func updateCurrenciesAvailable() {
         defer {
-            self.delegate.updatedRatesAvailable()
+            self.delegate?.updatedRatesAvailable()
         }
         var newCurrencies = [String]()
         self.rates.forEach { currency, _ in
@@ -56,20 +94,8 @@ final class CurrencySDK {
         }
         if self.currencies != newCurrencies {
             self.currencies = newCurrencies
-
+            
         }
-    }
-    
-    func loadDataLocally() {
-        // Load data from local cache
-    }
-    
-    func loadDataFromRemote() {
-        // Load data from service, called once every 30 minutes
-    }
-    
-    func saveDataLocally() {
-        // Save data to local store so that cache can be used on next open
     }
     
     func convert(from: String, to: String, value: Double) -> Double {
@@ -84,6 +110,8 @@ final class CurrencySDK {
     func currenciesAvailableCount() -> Int {
         return self.currencies.count
     }
+    
+    
 }
 
 private extension CurrencySDK {

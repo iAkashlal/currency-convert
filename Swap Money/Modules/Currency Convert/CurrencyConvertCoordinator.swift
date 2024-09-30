@@ -20,7 +20,8 @@ class CurrencyConvertCoordinator: Coordinator {
     }
     
     func start() {
-        let currencyConvertVM = CurrencyConvertVM(coordinator: self)
+        let currencyService = CurrencySDK(vendor: .openExchangeRates)
+        let currencyConvertVM = CurrencyConvertVM(coordinator: self, currencyService: currencyService)
         
         let currencyConvertView = CurrencyListView(viewModel: currencyConvertVM)
         

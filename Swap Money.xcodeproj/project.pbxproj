@@ -160,9 +160,9 @@
 		F809ABC52CAA809E007923B9 /* Currency Convert */ = {
 			isa = PBXGroup;
 			children = (
-				F809ABC22CAA809E007923B9 /* CurrencyConvertCoordinator.swift */,
 				F809ABC32CAA809E007923B9 /* CurrencyConvertVM.swift */,
 				F809ABC42CAA809E007923B9 /* CurrencyListView.swift */,
+				F809ABC22CAA809E007923B9 /* CurrencyConvertCoordinator.swift */,
 			);
 			path = "Currency Convert";
 			sourceTree = "<group>";
