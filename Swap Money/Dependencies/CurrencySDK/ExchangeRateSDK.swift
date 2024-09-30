@@ -1,5 +1,5 @@
 //
-//  CurrencySDK.swift
+//  ExchangeRateSDK.swift
 //  Swap Money
 //
 //  Created by Akashlal Bathe on 29/09/24.
@@ -11,22 +11,22 @@ enum CurrencySDKVendors {
     case openExchangeRates
 }
 
-public protocol CurrencySDKDelegate {
+public protocol ExchangeRateSDKDelegate {
     /// Get notified whenever new rates are available
     func updatedRatesAvailable()
 }
 
-public protocol CurrencyService {
+public protocol ExchangeRateService {
     
-    var delegate: CurrencySDKDelegate? { get set }
+    var delegate: ExchangeRateSDKDelegate? { get set }
     
     func convert(from: String, to: String, value: Double) -> Double
     func currenciesAvailableCount() -> Int
     func currenciesAvailable() -> [String]
 }
 
-final class CurrencySDK: CurrencyService {
-    var delegate: (any CurrencySDKDelegate)?
+final class ExchangeRateSDK: ExchangeRateService {
+    var delegate: (any ExchangeRateSDKDelegate)?
     
     private var service: NetworkService<OERResponse>?
     private var persistenceService: LocalPersistence = FilePersistence()
@@ -168,7 +168,7 @@ final class CurrencySDK: CurrencyService {
     
 }
 
-private extension CurrencySDK {
+private extension ExchangeRateSDK {
     func convertToUSD(from currency: String, value: Double) -> Double {
         guard let rate = rates[currency] else {
             Logger.sharedInstance.log(message: "Invalid Currency code. Tried to convert from \(currency) whose rate is unavailable")

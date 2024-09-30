@@ -23,7 +23,7 @@
 		F809ABE82CAA8301007923B9 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDD2CAA8301007923B9 /* NetworkRequest.swift */; };
 		F809ABE92CAA8301007923B9 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDE2CAA8301007923B9 /* NetworkService.swift */; };
 		F809ABEA2CAA8301007923B9 /* OpenExchangeRateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */; };
-		F809ABEB2CAA8301007923B9 /* CurrencySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE22CAA8301007923B9 /* CurrencySDK.swift */; };
+		F809ABEB2CAA8301007923B9 /* ExchangeRateSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */; };
 		F809ABEC2CAA8301007923B9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE42CAA8301007923B9 /* Logger.swift */; };
 		F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABF22CAA84C1007923B9 /* Coordinator.swift */; };
 		F809ABF82CAA84C1007923B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F809ABF42CAA84C1007923B9 /* Assets.xcassets */; };
@@ -71,7 +71,7 @@
 		F809ABDD2CAA8301007923B9 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		F809ABDE2CAA8301007923B9 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenExchangeRateAPI.swift; sourceTree = "<group>"; };
-		F809ABE22CAA8301007923B9 /* CurrencySDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencySDK.swift; sourceTree = "<group>"; };
+		F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeRateSDK.swift; sourceTree = "<group>"; };
 		F809ABE42CAA8301007923B9 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F809ABF22CAA84C1007923B9 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F809ABF42CAA84C1007923B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 				F809ABDC2CAA8301007923B9 /* Models */,
 				F809ABE02CAA8301007923B9 /* Networking */,
 				F809ABE12CAA8301007923B9 /* Persistence */,
-				F809ABE22CAA8301007923B9 /* CurrencySDK.swift */,
+				F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */,
 			);
 			path = CurrencySDK;
 			sourceTree = "<group>";
@@ -441,7 +441,7 @@
 				F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */,
 				F809ABD02CAA809E007923B9 /* OnboardingVM.swift in Sources */,
 				F84906962CAB22A30034AA3C /* PollingService.swift in Sources */,
-				F809ABEB2CAA8301007923B9 /* CurrencySDK.swift in Sources */,
+				F809ABEB2CAA8301007923B9 /* ExchangeRateSDK.swift in Sources */,
 				F809ABCB2CAA809E007923B9 /* CurrencyConvertCoordinator.swift in Sources */,
 				F809ABDA2CAA82EA007923B9 /* AppFlowStarter.swift in Sources */,
 				F809ABCF2CAA809E007923B9 /* OnboardingView.swift in Sources */,
