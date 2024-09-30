@@ -25,6 +25,7 @@ final class OnboardingVM: ObservableObject {
     @MainActor
     func completeOnboarding() {
         // Update some persisted variable
+        UserSettings.hasSeenOnboarding = true
         
         // Use coordinator to shift flow
         self.coordinator?.onboardUser()

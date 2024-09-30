@@ -43,10 +43,19 @@ extension AppDelegate {
     func setupFlow() {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        AppFlowStarter.shared.setup(
-            path: .onboarding,
-            in: window
-        )
+        
+        if !UserSettings.hasSeenOnboarding {
+            AppFlowStarter.shared.setup(
+                path: .onboarding,
+                in: window
+            )
+        } else {
+            AppFlowStarter.shared.setup(
+                path: .currencyConvert,
+                in: window
+            )
+        }
+        
         
         window?.makeKeyAndVisible()
     }

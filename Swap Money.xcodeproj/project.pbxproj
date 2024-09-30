@@ -27,6 +27,7 @@
 		F809ABEC2CAA8301007923B9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABE42CAA8301007923B9 /* Logger.swift */; };
 		F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABF22CAA84C1007923B9 /* Coordinator.swift */; };
 		F809ABF82CAA84C1007923B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F809ABF42CAA84C1007923B9 /* Assets.xcassets */; };
+		F849068D2CAA913A0034AA3C /* UserDefaultHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		F809ABE42CAA8301007923B9 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F809ABF22CAA84C1007923B9 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F809ABF42CAA84C1007923B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,8 +180,8 @@
 		F809ABCA2CAA809E007923B9 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				F809ABC52CAA809E007923B9 /* Currency Convert */,
 				F809ABC92CAA809E007923B9 /* Onboarding */,
+				F809ABC52CAA809E007923B9 /* Currency Convert */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -263,11 +265,20 @@
 		F809ABF62CAA84C1007923B9 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F849068B2CAA91270034AA3C /* Helpers */,
 				F809ABF12CAA84C1007923B9 /* Extensions */,
 				F809ABF32CAA84C1007923B9 /* Protocols */,
 				F809ABF52CAA84C1007923B9 /* Resources */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F849068B2CAA91270034AA3C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -400,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F849068D2CAA913A0034AA3C /* UserDefaultHelper.swift in Sources */,
 				F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */,
 				F809ABCE2CAA809E007923B9 /* OnboardingCoordinator.swift in Sources */,
 				F809AB7E2CAA801F007923B9 /* AppDelegate.swift in Sources */,
