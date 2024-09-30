@@ -29,6 +29,7 @@ final class CurrencySDK: CurrencyService {
     var delegate: (any CurrencySDKDelegate)?
     
     private var service: NetworkService<OERResponse>?
+    private var persistenceService: LocalPersistence = FilePersistence()
     private var vendor: CurrencySDKVendors
     private var lastUpdatedEpoch: Int = 0
     
@@ -40,10 +41,16 @@ final class CurrencySDK: CurrencyService {
             }
         }
     }
+    
+    private var pollingInSeconds = 1799
         
     init(vendor: CurrencySDKVendors) {
         self.vendor = vendor
         setupService()
+    }
+    
+    func updatePersistenceService(with service: LocalPersistence) {
+        self.persistenceService = service
     }
     
     private func setupService() {
@@ -51,37 +58,61 @@ final class CurrencySDK: CurrencyService {
         case .openExchangeRates:
             self.service = OERService()
         }
-        
-        loadDataLocally()
+    }
+    
+    /// Override default polling duration
+    func updatePollingDuration(in seconds: Int) {
+        self.pollingInSeconds = seconds
     }
     
     func loadDataLocally() {
         // Load data from local cache
-        
-        
-        let dataOutdated = true // When current data is older than 30 minutes
-        if dataOutdated {
+        if let response = persistenceService.restoreState() {
+            self.lastUpdatedEpoch = response.timestamp
+            self.rates = response.rates
+            checkIfDataNeedsToBeLoaded()
+        } else {
             Task {
                 await loadDataFromRemote()
             }
         }
     }
     
+    func checkIfDataNeedsToBeLoaded() {
+        let currentEpoch = Int(Date().timeIntervalSince1970)
+        let timeDifference = currentEpoch - lastUpdatedEpoch
+        
+        // Check if the difference is greater than 29 minutes and 59 seconds (1799 seconds)
+        if timeDifference > 1799 {
+            Task {
+                await loadDataFromRemote()
+            }
+        }
+    }
+
+    
+    // Load data from service, meant to be called once every 30 minutes
     func loadDataFromRemote() async {
-        // Load data from service, meant to be called once every 30 minutes
         do {
             let output = try await service?.fetch(request: OpenExchangeRateAPI.latest.request!)
             if let (response, urlResponse) = output {
-                self.lastUpdatedEpoch = response.timestamp
+                self.lastUpdatedEpoch = Int(Date().timeIntervalSince1970)
                 self.rates = response.rates
+                saveDataLocally(response: response)
             }
         } catch {
             debugPrint(error)
         }
     }
     
-    func saveDataLocally() {
+    func saveDataLocally(response: OERResponse) {
         // Save data to local store so that cache can be used on next open
+        let timeStampOverriddenResponse = OERResponse(
+            timestamp: Int(Date().timeIntervalSince1970),
+            base: response.base,
+            rates: response.rates
+        )
+        persistenceService.saveState(response)
     }
     
     func updateCurrenciesAvailable() {

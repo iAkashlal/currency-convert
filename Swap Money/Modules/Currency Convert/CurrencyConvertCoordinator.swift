@@ -22,6 +22,8 @@ class CurrencyConvertCoordinator: Coordinator {
     func start() {
         let currencyService = CurrencySDK(vendor: .openExchangeRates)
         let currencyConvertVM = CurrencyConvertVM(coordinator: self, currencyService: currencyService)
+        currencyConvertVM.setCurrencyServiceDelegate()
+        currencyService.loadDataLocally()
         
         let currencyConvertView = CurrencyListView(viewModel: currencyConvertVM)
         

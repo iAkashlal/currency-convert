@@ -28,6 +28,9 @@
 		F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809ABF22CAA84C1007923B9 /* Coordinator.swift */; };
 		F809ABF82CAA84C1007923B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F809ABF42CAA84C1007923B9 /* Assets.xcassets */; };
 		F849068D2CAA913A0034AA3C /* UserDefaultHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */; };
+		F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F849068E2CAB17C70034AA3C /* FilePersistence.swift */; };
+		F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906902CAB19110034AA3C /* LocalPersistence.swift */; };
+		F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +75,9 @@
 		F809ABF22CAA84C1007923B9 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F809ABF42CAA84C1007923B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F849068C2CAA913A0034AA3C /* UserDefaultHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultHelper.swift; sourceTree = "<group>"; };
+		F849068E2CAB17C70034AA3C /* FilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePersistence.swift; sourceTree = "<group>"; };
+		F84906902CAB19110034AA3C /* LocalPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistence.swift; sourceTree = "<group>"; };
+		F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultPersistence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +213,9 @@
 		F809ABE12CAA8301007923B9 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				F849068E2CAB17C70034AA3C /* FilePersistence.swift */,
+				F84906902CAB19110034AA3C /* LocalPersistence.swift */,
+				F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -414,8 +423,11 @@
 				F849068D2CAA913A0034AA3C /* UserDefaultHelper.swift in Sources */,
 				F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */,
 				F809ABCE2CAA809E007923B9 /* OnboardingCoordinator.swift in Sources */,
+				F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */,
 				F809AB7E2CAA801F007923B9 /* AppDelegate.swift in Sources */,
+				F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */,
 				F809ABCC2CAA809E007923B9 /* CurrencyConvertVM.swift in Sources */,
+				F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */,
 				F809ABD02CAA809E007923B9 /* OnboardingVM.swift in Sources */,
 				F809ABEB2CAA8301007923B9 /* CurrencySDK.swift in Sources */,
 				F809ABCB2CAA809E007923B9 /* CurrencyConvertCoordinator.swift in Sources */,

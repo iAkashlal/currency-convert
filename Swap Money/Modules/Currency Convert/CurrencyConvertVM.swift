@@ -26,8 +26,11 @@ final class CurrencyConvertVM: ObservableObject {
         self.setup()
     }
     
-    private func setup() {
+    func setCurrencyServiceDelegate() {
         self.currencyService?.delegate = self
+    }
+    
+    private func setup() {
 
         Task {
             await MainActor.run {
