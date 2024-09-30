@@ -18,9 +18,7 @@ final class CurrencyConvertVM: ObservableObject {
         self.currencyService?.delegate = self
     }
     
-    func showConverter() {
-        
-    }
+    
 }
 
 extension CurrencyConvertVM: CurrencySDKDelegate {
