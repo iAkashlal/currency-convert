@@ -52,6 +52,7 @@ struct CurrencyListView: View {
                 }
             }
         }
+        .navigationTitle("swap.money")
         .onAppear {
             // After 2 seconds, animate the disappearance of the text
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
