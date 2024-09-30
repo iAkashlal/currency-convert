@@ -99,6 +99,7 @@ struct CurrencyRowView: View {
 
         }
         .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
+        .navigationTitle("swap.money")
     }
 }
 
