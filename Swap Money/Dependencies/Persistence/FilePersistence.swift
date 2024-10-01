@@ -8,9 +8,9 @@
 import Foundation
 
 // Memento class responsible for saving and restoring OERResponse state
-class FilePersistence: LocalPersistence {
+class FilePersistence<T: Codable>: LocalPersistence {
 
-    private let fileName = "OERResponseMemento.json"
+    private let fileName = "\(String(describing: T.self))Memento.json"
     
     // Helper to get the file URL in the documents directory
     private func getFileURL() -> URL? {
@@ -23,7 +23,7 @@ class FilePersistence: LocalPersistence {
     }
     
     // Save the current state of OERResponse to a file
-    func saveState(_ response: OERResponse) {
+    func saveState(_ response: T) {
         guard let fileURL = getFileURL() else { return }
         
         // Encode OERResponse as Data
@@ -37,14 +37,14 @@ class FilePersistence: LocalPersistence {
     }
     
     // Restore the saved state of OERResponse from the file
-    func restoreState() -> OERResponse? {
+    func restoreState() -> T? {
         guard let fileURL = getFileURL() else { return nil }
         
         // Read the Data from the file
         do {
             let savedResponseData = try Data(contentsOf: fileURL)
             // Decode the Data back to OERResponse
-            let decodedResponse = try JSONDecoder().decode(OERResponse.self, from: savedResponseData)
+            let decodedResponse = try JSONDecoder().decode(T.self, from: savedResponseData)
             return decodedResponse
         } catch {
             print("Failed to restore state: \(error)")
