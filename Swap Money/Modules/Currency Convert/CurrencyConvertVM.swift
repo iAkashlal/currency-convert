@@ -25,7 +25,7 @@ final class CurrencyConvertVM: ObservableObject {
     
     private var favourites: [String] = []
     
-    init(coordinator: Coordinator?, currencyService: ExchangeRateService?) {
+    init(coordinator: Coordinator? = nil, currencyService: ExchangeRateService? = nil) {
         self.coordinator = coordinator
         self.currencyService = currencyService ?? ExchangeRateSDK(vendor: .openExchangeRates)
         

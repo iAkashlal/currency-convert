@@ -183,5 +183,5 @@ struct RoundedCornersShape: Shape {
 }
 
 #Preview {
-    CurrencyListView(viewModel: CurrencyConvertVM(coordinator: nil, currencyService: nil))
+    CurrencyListView(viewModel: CurrencyConvertVM())
 }
