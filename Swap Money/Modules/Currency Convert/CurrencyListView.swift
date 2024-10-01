@@ -112,11 +112,12 @@ struct CurrencyRowView: View {
                             .transition(.opacity)  // Smooth transition for the text
                     }
                 }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
+                .padding(.vertical, 7)
+                .padding(.horizontal, 12)
                 .background(Color(.systemGray5))
                 .cornerRadius(10)
             }
+            .padding(.vertical, 4)
             .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
         }
         .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
