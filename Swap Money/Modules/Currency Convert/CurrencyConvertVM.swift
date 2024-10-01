@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class CurrencyConvertVM: ObservableObject {
     var coordinator: Coordinator?
     var currencyService: ExchangeRateService?
@@ -37,11 +38,7 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     private func setup() {
-        Task {
-            await MainActor.run {
-                self.baseCurrency = UserSettings.preferredCurrency
-            }
-        }
+        self.baseCurrency = UserSettings.preferredCurrency
         self.favourites = UserSettings.favouriteCurrencies
     }
     
@@ -57,11 +54,7 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     func swapButtonTapped(for currency: String) {
-        Task {
-            await MainActor.run {
-                self.updateBaseCurrency(to: currency)
-            }
-        }
+        self.updateBaseCurrency(to: currency)
     }
     
     private func updateBaseCurrency(to currency: String) {
