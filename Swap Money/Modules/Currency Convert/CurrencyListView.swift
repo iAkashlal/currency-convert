@@ -14,89 +14,97 @@ struct CurrencyListView: View {
     @FocusState private var isInputFocused: Bool  // Focus state to control keyboard dismissal
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Input Bar
-            HStack(spacing: 0) {
-                // Input TextField
-                TextField("Enter amount", text: $viewModel.inputValue)
-                    .keyboardType(.decimalPad)
-                    .focused($isInputFocused)  // Attach focus state to the TextField
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
-                    .frame(maxWidth: .infinity)
-                    .onChange(of: viewModel.inputValue) { _ in
-                        viewModel.validateInput()
-                    }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Spacer() // Push the Done button to the right
-                            Button("Done") {
-                                isInputFocused = false  // Dismiss the keyboard
+        ZStack {
+            VStack(spacing: 0) {
+                // Input Bar
+                HStack(spacing: 0) {
+                    // Input TextField
+                    TextField("Enter amount", text: $viewModel.inputValue)
+                        .keyboardType(.decimalPad)
+                        .focused($isInputFocused)  // Attach focus state to the TextField
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(Color(.systemGray6))
+                        .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
+                        .frame(maxWidth: .infinity)
+                        .onChange(of: viewModel.inputValue) { _ in
+                            viewModel.validateInput()
+                        }
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer() // Push the Done button to the right
+                                Button("Done") {
+                                    isInputFocused = false  // Dismiss the keyboard
+                                }
                             }
                         }
-                    }
+                    
+                    // Base Currency Capsule
+                    Text(viewModel.baseCurrency)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(Color.blue)
+                        .clipShape(RoundedCornersShape(radius: 8, corners: [.topRight, .bottomRight])) // Round only right corners
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 8)
                 
-                // Base Currency Capsule
-                Text(viewModel.baseCurrency)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 8)
-                    .background(Color.blue)
-                    .clipShape(RoundedCornersShape(radius: 8, corners: [.topRight, .bottomRight])) // Round only right corners
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 8)
-            
-            // Show error message
-            if viewModel.showError {
-                Text(viewModel.errorMessage ?? "Some error occured")
-                    .foregroundColor(.red)
-                    .font(.caption)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 8)
-            }
-            
-            if viewModel.isLoading {
-                // Show loading spinner
-                ProgressView("Loading currencies...")
-                    .padding(.top, 20)
-                Spacer()
-            } else {
-                // List of currencies
-                List {
-                    ForEach(viewModel.currencies, id: \.self) { currency in
-                        CurrencyRowView(
-                            currency: currency,
-                            isPinned: viewModel.isFavourite(currency: currency),
-                            amount: viewModel.getValue(for: currency),
-                            pinAction: {
-                                withAnimation {
-                                    viewModel.toggleFavourite(for: currency)
-                                }
-                            },
-                            reverseCurrencyAction: {
-                                viewModel.updateBaseCurrency(to: currency)
-                            }, showSwapText: $showSwapText
-                        )
+                // Show error message
+                if viewModel.showError {
+                    Text(viewModel.errorMessage ?? "Some error occured")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 8)
+                }
+                
+                if viewModel.isLoading {
+                    // Show loading spinner
+                    ProgressView("Loading currencies...")
+                        .padding(.top, 20)
+                    Spacer()
+                } else {
+                    // List of currencies
+                    List {
+                        ForEach(viewModel.currencies, id: \.self) { currency in
+                            CurrencyRowView(
+                                currency: currency,
+                                isPinned: viewModel.isFavourite(currency: currency),
+                                amount: viewModel.getValue(for: currency),
+                                pinAction: {
+                                    withAnimation {
+                                        viewModel.toggleFavourite(for: currency)
+                                    }
+                                },
+                                reverseCurrencyAction: {
+                                    viewModel.updateBaseCurrency(to: currency)
+                                }, showSwapText: $showSwapText
+                            )
+                        }
+                        .animation(.default, value: viewModel.currencies)
                     }
-                    .animation(.default, value: viewModel.currencies)
+                    .padding(.top, 0)
                 }
-                .padding(.top, 0)
             }
+            .navigationTitle("swap.money")
+            .onAppear {
+                // After 4 seconds, animate the disappearance of the text
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    withAnimation {
+                        showSwapText = false
+                    }
+                }
+            }
+            
         }
-        .navigationTitle("swap.money")
-        .onAppear {
-            // After 4 seconds, animate the disappearance of the text
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                withAnimation {
-                    showSwapText = false
-                }
-            }
+        .contentShape(Rectangle())  // Makes the entire VStack tappable
+        .onTapGesture {
+            isInputFocused = false
         }
     }
+    
     
     
 }
