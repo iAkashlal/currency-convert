@@ -15,9 +15,13 @@ final class CurrencyConvertVM: ObservableObject {
     @Published var inputValue: String = "1"
     @Published var showError: Bool = false // Track whether to show the error message
     @Published var errorMessage: String? = nil // Error message to display
-
+    @Published var isLoading: Bool = true  // Track loading state
     
-    @Published var currencies: [String] = []
+    @Published var currencies: [String] = [] {
+        didSet {
+            self.isLoading = currencies.isEmpty
+        }
+    }
     
     private var favourites: [String] = []
     
@@ -65,7 +69,7 @@ final class CurrencyConvertVM: ObservableObject {
         return favourites.contains(currency)
     }
     
-    @MainActor 
+    @MainActor
     func toggleFavourite(for currency: String) {
         if favourites.contains(currency) {
             favourites.removeAll { $0 == currency }
