@@ -11,6 +11,7 @@ struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
     
     @State private var showSwapText: Bool = true
+    @FocusState private var isInputFocused: Bool  // Focus state to control keyboard dismissal
     
     var body: some View {
         VStack(spacing: 0) {
@@ -19,13 +20,22 @@ struct CurrencyListView: View {
                 // Input TextField
                 TextField("Enter amount", text: $viewModel.inputValue)
                     .keyboardType(.decimalPad)
+                    .focused($isInputFocused)  // Attach focus state to the TextField
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
                     .background(Color(.systemGray6))
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
                     .frame(maxWidth: .infinity)
-                    .onChange(of: viewModel.inputValue) { _, _ in
+                    .onChange(of: viewModel.inputValue) { _ in
                         viewModel.validateInput()
+                    }
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer() // Push the Done button to the right
+                            Button("Done") {
+                                isInputFocused = false  // Dismiss the keyboard
+                            }
+                        }
                     }
 
                 // Base Currency Capsule
