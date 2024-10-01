@@ -24,6 +24,9 @@ struct CurrencyListView: View {
                     .background(Color(.systemGray6))
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
                     .frame(maxWidth: .infinity)
+                    .onChange(of: viewModel.inputValue) { _, _ in
+                        viewModel.validateInput()
+                    }
 
                 // Base Currency Capsule
                 Text(viewModel.baseCurrency)
@@ -36,6 +39,15 @@ struct CurrencyListView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 8)
+            
+            // Show error message
+            if viewModel.showError {
+                Text(viewModel.errorMessage ?? "Some error occured")
+                    .foregroundColor(.red)
+                    .font(.caption)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            }
             
             // List of currencies
             List {

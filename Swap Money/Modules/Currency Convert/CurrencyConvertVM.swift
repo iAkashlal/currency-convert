@@ -13,6 +13,8 @@ final class CurrencyConvertVM: ObservableObject {
     
     @Published var baseCurrency: String = "USD"
     @Published var inputValue: String = "1"
+    @Published var showError: Bool = false // Track whether to show the error message
+    @Published var errorMessage: String? = nil // Error message to display
 
     
     @Published var currencies: [String] = []
@@ -31,13 +33,23 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     private func setup() {
-
         Task {
             await MainActor.run {
                 self.baseCurrency = UserSettings.preferredCurrency
             }
         }
         self.favourites = UserSettings.favouriteCurrencies
+    }
+    
+    // Check if input is a valid number
+    func validateInput() {
+        if Double(inputValue) == nil {
+            self.showError = true
+            self.errorMessage = "Please enter a valid number"
+        } else {
+            self.showError = false
+            self.errorMessage = nil
+        }
     }
     
     func updateBaseCurrency(to currency: String) {
