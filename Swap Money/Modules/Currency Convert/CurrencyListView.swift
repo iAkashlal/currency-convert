@@ -37,7 +37,7 @@ struct CurrencyListView: View {
                             }
                         }
                     }
-
+                
                 // Base Currency Capsule
                 Text(viewModel.baseCurrency)
                     .font(.headline)
@@ -59,26 +59,33 @@ struct CurrencyListView: View {
                     .padding(.bottom, 8)
             }
             
-            // List of currencies
-            List {
-                ForEach(viewModel.currencies, id: \.self) { currency in
-                    CurrencyRowView(
-                        currency: currency,
-                        isPinned: viewModel.isFavourite(currency: currency),
-                        amount: viewModel.getValue(for: currency),
-                        pinAction: {
-                            withAnimation {
-                                viewModel.toggleFavourite(for: currency)
-                            }
-                        },
-                        reverseCurrencyAction: {
-                            viewModel.updateBaseCurrency(to: currency)
-                        }, showSwapText: $showSwapText
-                    )
+            if viewModel.isLoading {
+                // Show loading spinner
+                ProgressView("Loading currencies...")
+                    .padding(.top, 20)
+                Spacer()
+            } else {
+                // List of currencies
+                List {
+                    ForEach(viewModel.currencies, id: \.self) { currency in
+                        CurrencyRowView(
+                            currency: currency,
+                            isPinned: viewModel.isFavourite(currency: currency),
+                            amount: viewModel.getValue(for: currency),
+                            pinAction: {
+                                withAnimation {
+                                    viewModel.toggleFavourite(for: currency)
+                                }
+                            },
+                            reverseCurrencyAction: {
+                                viewModel.updateBaseCurrency(to: currency)
+                            }, showSwapText: $showSwapText
+                        )
+                    }
+                    .animation(.default, value: viewModel.currencies)
                 }
-                .animation(.default, value: viewModel.currencies)
+                .padding(.top, 0)
             }
-            .padding(.top, 0)
         }
         .navigationTitle("swap.money")
         .onAppear {
@@ -101,7 +108,7 @@ struct CurrencyRowView: View {
     var pinAction: () -> Void
     var reverseCurrencyAction: () -> Void
     @Binding var showSwapText: Bool
-
+    
     var body: some View {
         HStack {
             // Pin Button
@@ -158,7 +165,7 @@ struct CurrencyRowView: View {
 struct RoundedCornersShape: Shape {
     var radius: CGFloat = 10.0
     var corners: UIRectCorner = .allCorners
-
+    
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(roundedRect: rect,
                                 byRoundingCorners: corners,
