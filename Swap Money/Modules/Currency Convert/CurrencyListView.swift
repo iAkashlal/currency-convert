@@ -11,6 +11,8 @@ struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
     @State private var inputValue: String = "1"
     
+    @State private var showSwapText: Bool = true
+    
     var body: some View {
         VStack(spacing: 0) {
             // Input Bar
@@ -45,8 +47,17 @@ struct CurrencyListView: View {
                         },
                         reverseCurrencyAction: {
                             self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))"
-                        }
+                        }, showSwapText: $showSwapText
                     )
+                }
+            }
+        }
+        .navigationTitle("swap.money")
+        .onAppear {
+            // After 4 seconds, animate the disappearance of the text
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                withAnimation {
+                    showSwapText = false
                 }
             }
         }
@@ -61,7 +72,8 @@ struct CurrencyRowView: View {
     var amount: Double
     var pinAction: () -> Void
     var reverseCurrencyAction: () -> Void
-    
+    @Binding var showSwapText: Bool
+
     var body: some View {
         HStack {
             // Pin Button
@@ -70,13 +82,13 @@ struct CurrencyRowView: View {
                     .foregroundColor(isPinned ? .yellow : .gray)
             }
             .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
-
             
             // Currency Code
             Text(currency)
                 .font(.headline)
                 .foregroundColor(.white)
-                .padding()
+                .padding(.vertical, 2)
+                .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
             
             Spacer()
@@ -87,20 +99,31 @@ struct CurrencyRowView: View {
             
             // Reverse Base Currency Button (Emoji Style)
             Button(action: reverseCurrencyAction) {
-                Image(systemName: "arrow.left.arrow.right")
-                    .font(.callout)
-                    .frame(width: 15)
-                    .padding()
-                    .background(Color.orange)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
+                HStack {
+                    Image(systemName: "arrow.left.arrow.right")
+                        .font(.callout)
+                        .foregroundColor(.gray)
+                    
+                    // Animate disappearance of "Swap" text
+                    if showSwapText {
+                        Text("Swap")
+                            .font(.callout)
+                            .foregroundColor(.gray)
+                            .transition(.opacity)  // Smooth transition for the text
+                    }
+                }
+                .padding(.vertical, 4)
+                .padding(.horizontal, 12)
+                .background(Color(.systemGray5))
+                .cornerRadius(8)
             }
+            .padding(.vertical, 4)
             .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
-
         }
         .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
     }
 }
+
 
 
 struct RoundedCornersShape: Shape {
