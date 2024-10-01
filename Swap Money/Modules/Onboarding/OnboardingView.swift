@@ -16,17 +16,17 @@ struct OnboardingView: View {
             TabView(selection: $currentPage) {
                 ForEach(0..<viewModel.features.count) { index in
                     VStack(spacing: 20) {
-                        Image(systemName: "dollarsign.circle.fill")
+                        Image(systemName: viewModel.features[index].0)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 100, height: 100)
                             .foregroundColor(.blue)
                         
-                        Text(viewModel.features[index].0)
+                        Text(viewModel.features[index].1)
                             .font(.title)
                             .fontWeight(.bold)
                         
-                        Text(viewModel.features[index].1)
+                        Text(viewModel.features[index].2)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                     }
