@@ -20,7 +20,8 @@ struct CurrencyListView: View {
                 // Input TextField
                 TextField("Enter amount", text: $inputValue)
                     .keyboardType(.decimalPad)
-                    .padding()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
                     .background(Color(.systemGray6))
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
                     .frame(maxWidth: .infinity)
@@ -29,11 +30,13 @@ struct CurrencyListView: View {
                 Text(viewModel.baseCurrency)
                     .font(.headline)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
                     .background(Color.blue)
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topRight, .bottomRight])) // Round only right corners
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.bottom, 8)
             
             // List of currencies
             List {
@@ -51,6 +54,7 @@ struct CurrencyListView: View {
                     )
                 }
             }
+            .padding(.top, 0)
         }
         .navigationTitle("swap.money")
         .onAppear {
@@ -96,6 +100,7 @@ struct CurrencyRowView: View {
             // Converted Currency Value
             Text(amount, format: .currency(code: currency))
                 .font(.title3)
+                .foregroundStyle(.primary)
             
             // Reverse Base Currency Button (Emoji Style)
             Button(action: reverseCurrencyAction) {
