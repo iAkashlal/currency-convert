@@ -57,7 +57,6 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     func updateBaseCurrency(to currency: String) {
-        let currentBaseCurrency = baseCurrency
         let newCurrency = currency
         let newValue = getValue(for: newCurrency)
         self.baseCurrency = newCurrency
@@ -82,8 +81,8 @@ final class CurrencyConvertVM: ObservableObject {
     
     @MainActor
     func updateCurrencies() {
-        var currencies = currencyService!.currenciesAvailable().filter{ !self.favourites.contains($0)
-        }
+        guard let service = currencyService else { return }
+        var currencies = service.currenciesAvailable().filter{ !self.favourites.contains($0) }
         self.favourites.reversed().forEach {
             currencies.insert($0, at: 0)
         }
