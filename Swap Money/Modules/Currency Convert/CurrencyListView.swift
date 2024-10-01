@@ -87,7 +87,7 @@ struct CurrencyRowView: View {
             Text(currency)
                 .font(.headline)
                 .foregroundColor(.white)
-                .padding(.vertical, 3)
+                .padding(.vertical, 2)
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
             
@@ -112,10 +112,10 @@ struct CurrencyRowView: View {
                             .transition(.opacity)  // Smooth transition for the text
                     }
                 }
-                .padding(.vertical, 7)
+                .padding(.vertical, 4)
                 .padding(.horizontal, 12)
                 .background(Color(.systemGray5))
-                .cornerRadius(10)
+                .cornerRadius(8)
             }
             .padding(.vertical, 4)
             .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
