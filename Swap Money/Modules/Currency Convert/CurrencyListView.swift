@@ -79,7 +79,7 @@ struct CurrencyListView: View {
                                     }
                                 },
                                 reverseCurrencyAction: {
-                                    viewModel.updateBaseCurrency(to: currency)
+                                    viewModel.swapButtonTapped(for: currency)
                                 }, showSwapText: $showSwapText
                             )
                         }
