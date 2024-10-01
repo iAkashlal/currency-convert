@@ -29,7 +29,7 @@ final class ExchangeRateSDK: ExchangeRateService {
     var delegate: (any ExchangeRateSDKDelegate)?
     
     private var service: NetworkService<OERResponse>?
-    private var persistenceService: LocalPersistence = FilePersistence()
+    private var persistenceService: AnyLocalPersistence<OERResponse> = AnyLocalPersistence(FilePersistence<OERResponse>())
     private var vendor: CurrencySDKVendors
     private var lastUpdatedEpoch: Int = 0
     
@@ -51,7 +51,7 @@ final class ExchangeRateSDK: ExchangeRateService {
         setupServices()
     }
     
-    func updatePersistenceService(with service: LocalPersistence) {
+    func updatePersistenceService(with service: AnyLocalPersistence<OERResponse>) {
         self.persistenceService = service
     }
     

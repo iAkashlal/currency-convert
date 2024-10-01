@@ -207,7 +207,6 @@
 			children = (
 				F809ABDD2CAA8301007923B9 /* NetworkRequest.swift */,
 				F809ABDE2CAA8301007923B9 /* NetworkService.swift */,
-				F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -226,8 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				F809ABDC2CAA8301007923B9 /* Models */,
-				F809ABE02CAA8301007923B9 /* Networking */,
-				F809ABE12CAA8301007923B9 /* Persistence */,
+				F809ABDF2CAA8301007923B9 /* OpenExchangeRateAPI.swift */,
 				F809ABE22CAA8301007923B9 /* ExchangeRateSDK.swift */,
 			);
 			path = CurrencySDK;
@@ -244,8 +242,10 @@
 		F809ABE62CAA8301007923B9 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				F84906942CAB229A0034AA3C /* Polling */,
 				F809ABE32CAA8301007923B9 /* CurrencySDK */,
+				F809ABE02CAA8301007923B9 /* Networking */,
+				F84906942CAB229A0034AA3C /* Polling */,
+				F809ABE12CAA8301007923B9 /* Persistence */,
 				F809ABE52CAA8301007923B9 /* Logger */,
 			);
 			path = Dependencies;
@@ -624,6 +624,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RZ7W6B4ZVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -652,6 +653,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RZ7W6B4ZVW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
