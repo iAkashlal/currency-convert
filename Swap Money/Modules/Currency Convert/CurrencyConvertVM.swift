@@ -57,6 +57,7 @@ final class CurrencyConvertVM: ObservableObject {
         let newCurrency = currency
         let newValue = getValue(for: newCurrency)
         self.baseCurrency = newCurrency
+        UserSettings.preferredCurrency = newCurrency
         self.inputValue = "\(newValue)"
     }
     
