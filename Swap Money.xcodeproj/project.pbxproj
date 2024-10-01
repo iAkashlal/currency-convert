@@ -214,8 +214,8 @@
 		F809ABE12CAA8301007923B9 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				F849068E2CAB17C70034AA3C /* FilePersistence.swift */,
 				F84906902CAB19110034AA3C /* LocalPersistence.swift */,
+				F849068E2CAB17C70034AA3C /* FilePersistence.swift */,
 				F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */,
 			);
 			path = Persistence;
