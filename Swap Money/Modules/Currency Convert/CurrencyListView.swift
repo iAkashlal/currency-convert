@@ -67,13 +67,16 @@ struct CurrencyListView: View {
                         isPinned: viewModel.isFavourite(currency: currency),
                         amount: viewModel.getValue(for: currency),
                         pinAction: {
-                            viewModel.toggleFavourite(for: currency)
+                            withAnimation {
+                                viewModel.toggleFavourite(for: currency)
+                            }
                         },
                         reverseCurrencyAction: {
                             viewModel.updateBaseCurrency(to: currency)
                         }, showSwapText: $showSwapText
                     )
                 }
+                .animation(.default, value: viewModel.currencies)
             }
             .padding(.top, 0)
         }
