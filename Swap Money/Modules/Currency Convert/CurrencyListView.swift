@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
-    @State private var inputValue: String = "1"
     
     @State private var showSwapText: Bool = true
     
@@ -18,9 +17,10 @@ struct CurrencyListView: View {
             // Input Bar
             HStack(spacing: 0) {
                 // Input TextField
-                TextField("Enter amount", text: $inputValue)
+                TextField("Enter amount", text: $viewModel.inputValue)
                     .keyboardType(.decimalPad)
-                    .padding()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
                     .background(Color(.systemGray6))
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
                     .frame(maxWidth: .infinity)
@@ -29,11 +29,13 @@ struct CurrencyListView: View {
                 Text(viewModel.baseCurrency)
                     .font(.headline)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
                     .background(Color.blue)
                     .clipShape(RoundedCornersShape(radius: 8, corners: [.topRight, .bottomRight])) // Round only right corners
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.bottom, 8)
             
             // List of currencies
             List {
@@ -41,16 +43,17 @@ struct CurrencyListView: View {
                     CurrencyRowView(
                         currency: currency,
                         isPinned: viewModel.isFavourite(currency: currency),
-                        amount: viewModel.getValue(for: currency, value: inputValue),
+                        amount: viewModel.getValue(for: currency),
                         pinAction: {
                             viewModel.toggleFavourite(for: currency)
                         },
                         reverseCurrencyAction: {
-                            self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))"
+                            viewModel.updateBaseCurrency(to: currency)
                         }, showSwapText: $showSwapText
                     )
                 }
             }
+            .padding(.top, 0)
         }
         .navigationTitle("swap.money")
         .onAppear {
@@ -96,6 +99,7 @@ struct CurrencyRowView: View {
             // Converted Currency Value
             Text(amount, format: .currency(code: currency))
                 .font(.title3)
+                .foregroundStyle(.primary)
             
             // Reverse Base Currency Button (Emoji Style)
             Button(action: reverseCurrencyAction) {
