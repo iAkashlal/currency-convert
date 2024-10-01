@@ -57,7 +57,11 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     func swapButtonTapped(for currency: String) {
-        self.updateBaseCurrency(to: currency)
+        Task {
+            await MainActor.run {
+                self.updateBaseCurrency(to: currency)
+            }
+        }
     }
     
     private func updateBaseCurrency(to currency: String) {
