@@ -23,16 +23,16 @@
 
 ## Screenshots
 
-![Screenshot 1: Home Screen](Screenshots/SwapHome.png)  
+![Screenshot 1: Home Screen](Screenshots/SwapHome.jpeg)  
 *Add Swap Money to your homescreen. It looks good!*
 
-![Screenshot 2: Onboarding](Screenshots/SwapOnboarding.png)  
+![Screenshot 2: Onboarding](Screenshots/SwapOnboarding.jpeg)  
 *Prime users to various features this app provides.*
 
-![Screenshot 3: View exchange rates](Screenshots/SwapList.png)  
+![Screenshot 3: View exchange rates](Screenshots/SwapList.jpeg)  
 *Type in a value and see how it converts to different currencies. Change your base currency anytime by tapping on 'Swap' button.*
 
-![Screenshot 4: Have favourites?](Screenshots/SwapPinned.png)  
+![Screenshot 4: Have favourites?](Screenshots/SwapPinned.jpeg)  
 *Pin your favourite currencies at the top.*
 
 ## Architecture
