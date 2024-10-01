@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
-    @State private var inputValue: String = "1"
     
     @State private var showSwapText: Bool = true
     
@@ -18,7 +17,7 @@ struct CurrencyListView: View {
             // Input Bar
             HStack(spacing: 0) {
                 // Input TextField
-                TextField("Enter amount", text: $inputValue)
+                TextField("Enter amount", text: $viewModel.inputValue)
                     .keyboardType(.decimalPad)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
@@ -44,12 +43,12 @@ struct CurrencyListView: View {
                     CurrencyRowView(
                         currency: currency,
                         isPinned: viewModel.isFavourite(currency: currency),
-                        amount: viewModel.getValue(for: currency, value: inputValue),
+                        amount: viewModel.getValue(for: currency),
                         pinAction: {
                             viewModel.toggleFavourite(for: currency)
                         },
                         reverseCurrencyAction: {
-                            self.inputValue = "\(viewModel.updateBaseCurrencyAndReturnValue(with: currency, value: Double(inputValue) ?? 0.0))"
+                            viewModel.updateBaseCurrency(to: currency)
                         }, showSwapText: $showSwapText
                     )
                 }

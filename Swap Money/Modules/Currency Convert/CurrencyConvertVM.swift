@@ -12,10 +12,10 @@ final class CurrencyConvertVM: ObservableObject {
     var currencyService: ExchangeRateService?
     
     @Published var baseCurrency: String = "USD"
+    @Published var inputValue: String = "1"
+
     
     @Published var currencies: [String] = []
-    
-    @Published var inputValue: Double = 1.0
     
     private var favourites: [String] = []
     
@@ -40,16 +40,12 @@ final class CurrencyConvertVM: ObservableObject {
         self.favourites = UserSettings.favouriteCurrencies
     }
     
-    func updateBaseCurrencyAndReturnValue(with currency: String, value: Double) -> Double {
-        let newValue = self.getValue(for: currency, value: baseCurrency)
-        UserSettings.preferredCurrency = currency
-        Task {
-            await MainActor.run {
-                self.baseCurrency = currency
-            }
-        }
-        
-        return newValue
+    func updateBaseCurrency(to currency: String) {
+        let currentBaseCurrency = baseCurrency
+        let newCurrency = currency
+        let newValue = getValue(for: newCurrency)
+        self.baseCurrency = newCurrency
+        self.inputValue = "\(newValue)"
     }
     
     func isFavourite(currency: String) -> Bool {
@@ -77,8 +73,8 @@ final class CurrencyConvertVM: ObservableObject {
         self.currencies = currencies
     }
     
-    func getValue(for currency: String, value: String) -> Double {
-        let value = Double(value) ?? 1.0
+    func getValue(for currency: String) -> Double {
+        let value = Double(inputValue) ?? 1.0
         return currencyService?.convert(from: baseCurrency, to: currency, value: value) ?? 0
     }
     
