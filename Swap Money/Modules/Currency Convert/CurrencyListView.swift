@@ -119,66 +119,27 @@ struct CurrencyRowView: View {
     
     var body: some View {
         HStack {
-            // Pin Button
-            Button(action: pinAction) {
-                Image(systemName: isPinned ? "pin.fill" : "pin")
-                    .foregroundColor(isPinned ? .yellow : .gray)
-            }
-            .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
-            
-            // Currency Code
+            PinButton(
+                isPinned: isPinned,
+                action: pinAction
+            )
             Text(currency)
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding(.vertical, 2)
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-            
             Spacer()
-            
-            // Converted Currency Value
             Text(amount, format: .currency(code: currency))
                 .font(.title3)
                 .foregroundStyle(.primary)
-            
-            // Reverse Base Currency Button (Emoji Style)
-            Button(action: reverseCurrencyAction) {
-                HStack {
-                    Image(systemName: "arrow.left.arrow.right")
-                        .font(.callout)
-                        .foregroundColor(.gray)
-                    
-                    // Animate disappearance of "Swap" text
-                    if showSwapText {
-                        Text("Swap")
-                            .font(.callout)
-                            .foregroundColor(.gray)
-                            .transition(.opacity)  // Smooth transition for the text
-                    }
-                }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 12)
-                .background(Color(.systemGray5))
-                .cornerRadius(8)
-            }
-            .padding(.vertical, 4)
-            .buttonStyle(PlainButtonStyle())  // Prevent default button interaction style
+            ReverseCurrencyButton(
+                showSwapText: $showSwapText,
+                action: reverseCurrencyAction
+            )
         }
+        .padding(.vertical, 6)
         .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
-    }
-}
-
-
-
-struct RoundedCornersShape: Shape {
-    var radius: CGFloat = 10.0
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect,
-                                byRoundingCorners: corners,
-                                cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
     }
 }
 
