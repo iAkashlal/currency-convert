@@ -32,6 +32,9 @@
 		F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906902CAB19110034AA3C /* LocalPersistence.swift */; };
 		F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */; };
 		F84906962CAB22A30034AA3C /* PollingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906952CAB22A30034AA3C /* PollingService.swift */; };
+		F8D5E1CB2CAC3778002FF2D3 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CA2CAC3778002FF2D3 /* PinButton.swift */; };
+		F8D5E1CD2CAC378F002FF2D3 /* ReverseCurrencyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */; };
+		F8D5E1CF2CAC37B6002FF2D3 /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +83,9 @@
 		F84906902CAB19110034AA3C /* LocalPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistence.swift; sourceTree = "<group>"; };
 		F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultPersistence.swift; sourceTree = "<group>"; };
 		F84906952CAB22A30034AA3C /* PollingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingService.swift; sourceTree = "<group>"; };
+		F8D5E1CA2CAC3778002FF2D3 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
+		F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseCurrencyButton.swift; sourceTree = "<group>"; };
+		F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +174,7 @@
 		F809ABC52CAA809E007923B9 /* Currency Convert */ = {
 			isa = PBXGroup;
 			children = (
+				F8D5E1C92CAC3763002FF2D3 /* Components */,
 				F809ABC42CAA809E007923B9 /* CurrencyListView.swift */,
 				F809ABC32CAA809E007923B9 /* CurrencyConvertVM.swift */,
 				F809ABC22CAA809E007923B9 /* CurrencyConvertCoordinator.swift */,
@@ -299,6 +306,16 @@
 				F84906952CAB22A30034AA3C /* PollingService.swift */,
 			);
 			path = Polling;
+			sourceTree = "<group>";
+		};
+		F8D5E1C92CAC3763002FF2D3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F8D5E1CA2CAC3778002FF2D3 /* PinButton.swift */,
+				F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */,
+				F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -436,7 +453,9 @@
 				F809ABCE2CAA809E007923B9 /* OnboardingCoordinator.swift in Sources */,
 				F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */,
 				F809AB7E2CAA801F007923B9 /* AppDelegate.swift in Sources */,
+				F8D5E1CD2CAC378F002FF2D3 /* ReverseCurrencyButton.swift in Sources */,
 				F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */,
+				F8D5E1CF2CAC37B6002FF2D3 /* RoundedCornersShape.swift in Sources */,
 				F809ABCC2CAA809E007923B9 /* CurrencyConvertVM.swift in Sources */,
 				F849068F2CAB17C70034AA3C /* FilePersistence.swift in Sources */,
 				F809ABD02CAA809E007923B9 /* OnboardingVM.swift in Sources */,
@@ -450,6 +469,7 @@
 				F809ABE82CAA8301007923B9 /* NetworkRequest.swift in Sources */,
 				F809ABCD2CAA809E007923B9 /* CurrencyListView.swift in Sources */,
 				F809ABE92CAA8301007923B9 /* NetworkService.swift in Sources */,
+				F8D5E1CB2CAC3778002FF2D3 /* PinButton.swift in Sources */,
 				F809ABE72CAA8301007923B9 /* OERResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

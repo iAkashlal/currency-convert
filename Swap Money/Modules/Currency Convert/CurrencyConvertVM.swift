@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class CurrencyConvertVM: ObservableObject {
     var coordinator: Coordinator?
     var currencyService: ExchangeRateService?
@@ -25,7 +26,7 @@ final class CurrencyConvertVM: ObservableObject {
     
     private var favourites: [String] = []
     
-    init(coordinator: Coordinator?, currencyService: ExchangeRateService?) {
+    init(coordinator: Coordinator? = nil, currencyService: ExchangeRateService? = nil) {
         self.coordinator = coordinator
         self.currencyService = currencyService ?? ExchangeRateSDK(vendor: .openExchangeRates)
         
@@ -37,11 +38,7 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     private func setup() {
-        Task {
-            await MainActor.run {
-                self.baseCurrency = UserSettings.preferredCurrency
-            }
-        }
+        self.baseCurrency = UserSettings.preferredCurrency
         self.favourites = UserSettings.favouriteCurrencies
     }
     
@@ -56,8 +53,11 @@ final class CurrencyConvertVM: ObservableObject {
         }
     }
     
-    func updateBaseCurrency(to currency: String) {
-        let currentBaseCurrency = baseCurrency
+    func swapButtonTapped(for currency: String) {
+        self.updateBaseCurrency(to: currency)
+    }
+    
+    private func updateBaseCurrency(to currency: String) {
         let newCurrency = currency
         let newValue = getValue(for: newCurrency)
         self.baseCurrency = newCurrency
@@ -82,8 +82,8 @@ final class CurrencyConvertVM: ObservableObject {
     
     @MainActor
     func updateCurrencies() {
-        var currencies = currencyService!.currenciesAvailable().filter{ !self.favourites.contains($0)
-        }
+        guard let service = currencyService else { return }
+        var currencies = service.currenciesAvailable().filter{ !self.favourites.contains($0) }
         self.favourites.reversed().forEach {
             currencies.insert($0, at: 0)
         }
