@@ -24,9 +24,6 @@ struct CurrencyListView: View {
                         .focused($isInputFocused)  // Attach focus state to the TextField
                         .padding(.horizontal, 10)
                         .padding(.vertical, 8)
-                        .background(Color(.systemGray6))
-                        .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft])) // Round only left corners
-                        .frame(maxWidth: .infinity)
                         .onChange(of: viewModel.inputValue) { _ in
                             viewModel.validateInput()
                         }
@@ -43,11 +40,14 @@ struct CurrencyListView: View {
                     Text(viewModel.baseCurrency)
                         .font(.headline)
                         .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 8)
-                        .background(Color.blue)
-                        .clipShape(RoundedCornersShape(radius: 8, corners: [.topRight, .bottomRight])) // Round only right corners
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 8)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                    Spacer()
+                        .frame(width: 5)
                 }
+                .background(Color(.systemGray6))
+                .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft, .topRight, .bottomRight])) // Round only left corners
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
                 
@@ -86,17 +86,17 @@ struct CurrencyListView: View {
                         .animation(.default, value: viewModel.currencies)
                     }
                     .padding(.top, 0)
-                }
-            }
-            .navigationTitle("swap.money")
-            .onAppear {
-                // After 4 seconds, animate the disappearance of the text
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    withAnimation {
-                        showSwapText = false
+                    .onAppear {
+                        Task {
+                            try? await Task.sleep(nanoseconds: 4_000_000_000) // 4 seconds in nanoseconds
+                            withAnimation {
+                                showSwapText = false
+                            }
+                        }
                     }
                 }
             }
+            .navigationTitle("swap.money")
             
         }
         .contentShape(Rectangle())  // Makes the entire VStack tappable
