@@ -1,11 +1,5 @@
-//
-//  CurrencyConvertVM.swift
-//  Swap Money
-//
-//  Created by Akashlal Bathe on 29/09/24.
-//
-
 import Foundation
+import SwiftUI
 
 @MainActor
 final class CurrencyConvertVM: ObservableObject {
@@ -17,6 +11,9 @@ final class CurrencyConvertVM: ObservableObject {
     @Published var showError: Bool = false // Track whether to show the error message
     @Published var errorMessage: String? = nil // Error message to display
     @Published var isLoading: Bool = true  // Track loading state
+    @Published var animatedCurrency: String?
+    @Published var animationInProgress: Bool = false
+    @Published var animationStartRect: CGRect = .zero
     
     @Published var currencies: [String] = [] {
         didSet {
@@ -53,14 +50,28 @@ final class CurrencyConvertVM: ObservableObject {
         }
     }
     
-    func swapButtonTapped(for currency: String) {
-        self.updateBaseCurrency(to: currency)
+    func swapButtonTapped(for currency: String, startRect: CGRect) {
+        self.updateBaseCurrency(to: currency, startRect: startRect)
     }
     
-    private func updateBaseCurrency(to currency: String) {
+    private func updateBaseCurrency(to currency: String, startRect: CGRect) {
         let newCurrency = currency
         let newValue = getValue(for: newCurrency)
-        self.baseCurrency = newCurrency
+//        self.baseCurrency = newCurrency
+        DispatchQueue.main.async {
+            withAnimation(.easeInOut(duration: 0.5)) {  // Increased duration to 1 second
+                self.animatedCurrency = currency
+                self.animationStartRect = startRect
+                self.animationInProgress = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {  // Increased delay to 1 second
+            withAnimation(.easeInOut(duration: 0.5)) {  // Increased duration to 1 second
+                self.baseCurrency = currency
+                self.animatedCurrency = nil
+                self.animationInProgress = false
+            }
+        }
         UserSettings.preferredCurrency = newCurrency
         self.inputValue = "\(newValue)"
     }
@@ -102,5 +113,4 @@ extension CurrencyConvertVM: ExchangeRateSDKDelegate {
     func updatedRatesAvailable() {
         self.updateCurrencies()
     }
-    
 }

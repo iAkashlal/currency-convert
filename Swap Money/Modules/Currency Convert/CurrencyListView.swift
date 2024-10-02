@@ -1,18 +1,12 @@
-//
-//  CurrencyListView.swift
-//  Swap Money
-//
-//  Created by Akashlal Bathe on 29/09/24.
-//
-
 import SwiftUI
 
 struct CurrencyListView: View {
     @StateObject var viewModel: CurrencyConvertVM
-    
+
+    @Namespace private var animationNamespace
     @State private var showSwapText: Bool = true
     @FocusState private var isInputFocused: Bool  // Focus state to control keyboard dismissal
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -35,14 +29,27 @@ struct CurrencyListView: View {
                                 }
                             }
                         }
-                    
+
                     // Base Currency Capsule
-                    Text(viewModel.baseCurrency)
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 8)
-                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                    ZStack {
+                        if let animatedCurrency = viewModel.animatedCurrency {
+                            Text(animatedCurrency)
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding(.vertical, 5)
+                                .padding(.horizontal, 8)
+                                .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                                .matchedGeometryEffect(id: animatedCurrency, in: animationNamespace)
+                        }
+
+                        Text(viewModel.baseCurrency)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 8)
+                            .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                            .opacity(viewModel.animatedCurrency == nil ? 1 : 0)
+                    }
                     Spacer()
                         .frame(width: 5)
                 }
@@ -50,7 +57,7 @@ struct CurrencyListView: View {
                 .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft, .topRight, .bottomRight])) // Round only left corners
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
-                
+
                 // Show error message
                 if viewModel.showError {
                     Text(viewModel.errorMessage ?? "Some error occured")
@@ -59,7 +66,7 @@ struct CurrencyListView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 8)
                 }
-                
+
                 if viewModel.isLoading {
                     // Show loading spinner
                     ProgressView("Loading currencies...")
@@ -79,8 +86,11 @@ struct CurrencyListView: View {
                                     }
                                 },
                                 reverseCurrencyAction: {
-                                    viewModel.swapButtonTapped(for: currency)
-                                }, showSwapText: $showSwapText
+                                    let startRect = getRectForCurrencyRow(currency: currency)
+                                    viewModel.swapButtonTapped(for: currency, startRect: startRect)
+                                }, showSwapText: $showSwapText,
+                                animationNamespace: animationNamespace,
+                                animationInProgress: viewModel.animationInProgress
                             )
                         }
                         .animation(.default, value: viewModel.currencies)
@@ -97,16 +107,35 @@ struct CurrencyListView: View {
                 }
             }
             .navigationTitle("swap.money")
-            
+
+            // Overlay for animated currency
+            if let animatedCurrency = viewModel.animatedCurrency {
+                CurrencyAnimationOverlay(
+                    currency: animatedCurrency,
+                    namespace: animationNamespace,
+                    startRect: viewModel.animationStartRect,
+                    endRect: getRectForBaseCurrency(),
+                    animationInProgress: viewModel.animationInProgress
+                )
+            }
         }
         .contentShape(Rectangle())  // Makes the entire VStack tappable
         .onTapGesture {
             isInputFocused = false
         }
     }
-    
-    
-    
+
+    private func getRectForCurrencyRow(currency: String) -> CGRect {
+        // Calculate and return the CGRect for the given currency row
+        // This needs to be implemented based on your layout
+        return .zero
+    }
+
+    private func getRectForBaseCurrency() -> CGRect {
+        // Calculate and return the CGRect for the base currency capsule
+        // This needs to be implemented based on your layout
+        return .zero
+    }
 }
 
 struct CurrencyRowView: View {
@@ -116,7 +145,10 @@ struct CurrencyRowView: View {
     var pinAction: () -> Void
     var reverseCurrencyAction: () -> Void
     @Binding var showSwapText: Bool
-    
+
+    var animationNamespace: Namespace.ID
+    var animationInProgress: Bool
+
     var body: some View {
         HStack {
             PinButton(
@@ -129,6 +161,7 @@ struct CurrencyRowView: View {
                 .padding(.vertical, 2)
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                .matchedGeometryEffect(id: currency, in: animationNamespace)
             Spacer()
             Text(amount, format: .currency(code: currency))
                 .font(.title3)
@@ -140,6 +173,30 @@ struct CurrencyRowView: View {
         }
         .padding(.vertical, 6)
         .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
+    }
+}
+
+struct CurrencyAnimationOverlay: View {
+    var currency: String
+    var namespace: Namespace.ID
+    var startRect: CGRect
+    var endRect: CGRect
+    var animationInProgress: Bool
+
+    var body: some View {
+        GeometryReader { geometry in
+            if animationInProgress {
+                Text(currency)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 8)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
+                    .matchedGeometryEffect(id: currency, in: namespace)
+//                    .position(startRect.center(in: geometry.frame(in: .global)))
+                    .animation(.easeInOut(duration: 0.5), value: animationInProgress)
+            }
+        }
     }
 }
 
