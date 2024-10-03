@@ -26,7 +26,7 @@ class FilePersistence<T: Codable>: LocalPersistence {
     func saveState(_ response: T) {
         guard let fileURL = getFileURL() else { return }
         
-        // Encode OERResponse as Data
+        // Encode Codable value as Data
         do {
             let encodedResponse = try JSONEncoder().encode(response)
             // Write the encoded data to the file
@@ -36,14 +36,14 @@ class FilePersistence<T: Codable>: LocalPersistence {
         }
     }
     
-    // Restore the saved state of OERResponse from the file
+    // Restore the saved state of Codable Object from the file
     func restoreState() -> T? {
         guard let fileURL = getFileURL() else { return nil }
         
         // Read the Data from the file
         do {
             let savedResponseData = try Data(contentsOf: fileURL)
-            // Decode the Data back to OERResponse
+            // Decode the Data back to Codable format
             let decodedResponse = try JSONDecoder().decode(T.self, from: savedResponseData)
             return decodedResponse
         } catch {
