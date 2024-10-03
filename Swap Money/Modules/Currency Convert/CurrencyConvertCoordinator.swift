@@ -23,7 +23,7 @@ class CurrencyConvertCoordinator: Coordinator {
         let currencyService = ExchangeRateSDK(vendor: .openExchangeRates)
         let currencyConvertVM = CurrencyConvertVM(coordinator: self, currencyService: currencyService)
         currencyConvertVM.setCurrencyServiceDelegate()
-        currencyService.loadDataLocally()
+        currencyService.loadData()
         
         let currencyConvertView = CurrencyListView(viewModel: currencyConvertVM)
         

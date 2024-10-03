@@ -28,7 +28,7 @@ public protocol ExchangeRateService {
 final class ExchangeRateSDK: ExchangeRateService {
     var delegate: (any ExchangeRateSDKDelegate)?
     
-    private var service: NetworkService<OERResponse>?
+    private var networkservice: NetworkService<OERResponse>?
     private var persistenceService: AnyLocalPersistence<OERResponse> = AnyLocalPersistence(FilePersistence<OERResponse>())
     private var vendor: CurrencySDKVendors
     private var lastUpdatedEpoch: Int = 0
@@ -42,9 +42,9 @@ final class ExchangeRateSDK: ExchangeRateService {
         }
     }
     
-    private var pollingInSeconds = 1799
+    private var pollingInSeconds = 1799 // Setup default polling duration as 1799 ie. 29 minutes 59 seconds
     private var pollingService: Pollable
-        
+    
     init(vendor: CurrencySDKVendors) {
         self.vendor = vendor
         self.pollingService = PollingService(pollingInterval: TimeInterval(pollingInSeconds))
@@ -55,13 +55,16 @@ final class ExchangeRateSDK: ExchangeRateService {
         self.persistenceService = service
     }
     
+    func updateNetworkService(with service: NetworkService<OERResponse>) {
+        self.networkservice = service
+    }
+    
     private func setupServices() {
         switch self.vendor {
         case .openExchangeRates:
-            self.service = OERService()
+            self.networkservice = OERService()
         }
-        
-        self.updatePollingDuration(in: 1799)    // Setup default polling duration as 1799 ie. 29 minutes 59 seconds
+        self.updatePollingDuration(in: pollingInSeconds)
     }
     
     /// Override default polling duration
@@ -76,7 +79,12 @@ final class ExchangeRateSDK: ExchangeRateService {
         }
     }
     
-    func loadDataLocally() {
+    /// Call only after delegates are set
+    func loadData() {
+        self.loadDataLocally()
+    }
+    
+    private func loadDataLocally() {
         // Load data from local cache
         if let response = persistenceService.restoreState() {
             self.lastUpdatedEpoch = response.timestamp
@@ -89,7 +97,7 @@ final class ExchangeRateSDK: ExchangeRateService {
         }
     }
     
-    func checkIfDataNeedsToBeLoaded() {
+    private func checkIfDataNeedsToBeLoaded() {
         let currentEpoch = Int(Date().timeIntervalSince1970)
         let timeDifference = currentEpoch - lastUpdatedEpoch
         
@@ -100,33 +108,39 @@ final class ExchangeRateSDK: ExchangeRateService {
             }
         }
     }
-
     
     // Load data from service, meant to be called once every 30 minutes
-    func loadDataFromRemote() async {
+    private func loadDataFromRemote() async {
+        Logger.sharedInstance.log(message: "Local data outdated, attempting to fetch from network")
         do {
-            let output = try await service?.fetch(request: OpenExchangeRateAPI.latest.request!)
-            if let (response, urlResponse) = output {
+            guard let latestRequest = OpenExchangeRateAPI.latest.request else {
+                Logger.sharedInstance.log(message: "latestRequest unavailable \(#file) \(#line)")
+                return
+            }
+            
+            let output = try await networkservice?.fetch(request: latestRequest)
+            if let (response, _) = output {
                 self.lastUpdatedEpoch = Int(Date().timeIntervalSince1970)
                 self.rates = response.rates
                 saveDataLocally(response: response)
             }
         } catch {
+            Logger.sharedInstance.log(message: "\(error.localizedDescription) \(#file) \(#line)")
             debugPrint(error)
         }
     }
     
-    func saveDataLocally(response: OERResponse) {
+    private func saveDataLocally(response: OERResponse) {
         // Save data to local store so that cache can be used on next open
         let timeStampOverriddenResponse = OERResponse(
             timestamp: Int(Date().timeIntervalSince1970),
             base: response.base,
             rates: response.rates
         )
-        persistenceService.saveState(response)
+        persistenceService.saveState(timeStampOverriddenResponse)
     }
     
-    func updateCurrenciesAvailable() {
+    private func updateCurrenciesAvailable() {
         defer {
             notifyObserverAboutUpdatedRates()
         }
