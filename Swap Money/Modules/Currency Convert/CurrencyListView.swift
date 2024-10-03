@@ -41,7 +41,7 @@ struct CurrencyListView: View {
                                 .padding(.vertical, 5)
                                 .padding(.horizontal, 8)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-                                .matchedGeometryEffect(id: animatedCurrency, in: animationNamespace)
+                                .matchedGeometryEffect(id: animatedCurrency, in: animationNamespace, isSource: true)
                         }
 
                         Text(viewModel.baseCurrency)
@@ -93,7 +93,7 @@ struct CurrencyListView: View {
                                     viewModel.swapButtonTapped(for: currency, startRect: startRect)
                                 }, showSwapText: $showSwapText,
                                 animationNamespace: animationNamespace,
-                                animationInProgress: viewModel.animationInProgress
+                                isAnimatedCurrency: viewModel.animatedCurrency == currency
                             )
                             .identified(by: "CurrencyRow-\(currency)")
                         }
@@ -152,7 +152,7 @@ struct CurrencyRowView: View {
     @Binding var showSwapText: Bool
 
     var animationNamespace: Namespace.ID
-    var animationInProgress: Bool
+    var isAnimatedCurrency: Bool
 
     var body: some View {
         HStack {
@@ -166,7 +166,7 @@ struct CurrencyRowView: View {
                 .padding(.vertical, 2)
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-                .matchedGeometryEffect(id: currency, in: animationNamespace)
+                .matchedGeometryEffect(id: currency, in: animationNamespace, isSource: isAnimatedCurrency)
                 .identified(by: "CurrencyRow-\(currency)")
             Spacer()
             Text(amount, format: .currency(code: currency))
