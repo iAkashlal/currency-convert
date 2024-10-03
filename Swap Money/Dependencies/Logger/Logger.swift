@@ -46,7 +46,7 @@ final class BasicLogger: Loggable {
     func isLogged(exactMessage: String) -> Bool {
         concurrentQueue.sync {
             for (key, message) in logEvents {
-                if (message as? String) == exactMessage {
+                if let message = message as? String, message.contains(exactMessage) {
                     return true
                 }
             }
@@ -58,7 +58,7 @@ final class BasicLogger: Loggable {
 final class Logger {
     
     private init() {}
-    static var sharedInstance: Loggable?
+    static var sharedInstance = Logger()
     
     private var logger: any Loggable = BasicLogger()
     
