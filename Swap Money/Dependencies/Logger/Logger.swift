@@ -14,16 +14,20 @@ enum LogLevel : String {
     case error = "Error"
 }
 
-final class Logger {
-    
-    private init() {}
-    static let sharedInstance = Logger()
+protocol Loggable {
+    func log(key: String, message: String, logLevel : LogLevel, additionalParams: [String: Any]?)
+    func readValue(key: String) -> String?
+    func isLogged(exactMessage: String) -> Bool
+    func clearLogs()
+}
+
+final class BasicLogger: Loggable {
     
     private let concurrentQueue = DispatchQueue(label: "concurrentQueue",
                                                 attributes: .concurrent)
     private var logEvents: [String: Any] = [:]
     
-    func log(key: String = UUID().uuidString, message: String, logLevel : LogLevel = .info) {
+    func log(key: String, message: String, logLevel: LogLevel, additionalParams: [String: Any]?) {
         concurrentQueue.asyncAndWait(flags: .barrier, execute: {
             let timestamp = DateFormatter.localizedString(from: Date(),
                                                           dateStyle: .short, timeStyle: .long)
@@ -31,6 +35,7 @@ final class Logger {
             debugPrint("\(timestamp) \(logLevel.rawValue) \(message)")
         })
     }
+    
     func readValue(key: String) -> String? {
         var value: String?
         concurrentQueue.sync {
@@ -38,4 +43,41 @@ final class Logger {
         }
         return value
     }
+    
+    func isLogged(exactMessage: String) -> Bool {
+        concurrentQueue.sync {
+            for (_, message) in logEvents {
+                if let message = message as? String, message.contains(exactMessage) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+    
+    func clearLogs() {
+        self.logEvents.removeAll(keepingCapacity: false)
+    }
+}
+
+final class Logger {
+    
+    private init() {}
+    static var sharedInstance = Logger()
+    
+    private var logger: any Loggable = BasicLogger()
+    
+    func switchLogger(with logger: Loggable) {
+        self.logger = logger
+    }
+    
+    func log(key: String = UUID().uuidString, message: String, logLevel : LogLevel = .info, additionalParams: [String: Any]? = nil) {
+        self.logger.log(key: key, message: message, logLevel: logLevel, additionalParams: additionalParams)
+    }
+    
+    func readValue(key: String) -> String? {
+        self.logger.readValue(key: key)
+    }
+    
+    
 }
