@@ -7,6 +7,8 @@ struct CurrencyListView: View {
     @State private var showSwapText: Bool = true
     @FocusState private var isInputFocused: Bool  // Focus state to control keyboard dismissal
 
+    @State private var currencyRowRects: [String: CGRect] = [:]
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -49,6 +51,7 @@ struct CurrencyListView: View {
                             .padding(.horizontal, 8)
                             .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
                             .opacity(viewModel.animatedCurrency == nil ? 1 : 0)
+                            .identified(by: "BaseCurrencyCapsule")
                     }
                     Spacer()
                         .frame(width: 5)
@@ -92,6 +95,7 @@ struct CurrencyListView: View {
                                 animationNamespace: animationNamespace,
                                 animationInProgress: viewModel.animationInProgress
                             )
+                            .identified(by: "CurrencyRow-\(currency)")
                         }
                         .animation(.default, value: viewModel.currencies)
                     }
@@ -123,18 +127,19 @@ struct CurrencyListView: View {
         .onTapGesture {
             isInputFocused = false
         }
+        .onPreferenceChange(ViewIdentifierKey.self) { preferences in
+            for (key, value) in preferences {
+                currencyRowRects[key] = value
+            }
+        }
     }
 
     private func getRectForCurrencyRow(currency: String) -> CGRect {
-        // Calculate and return the CGRect for the given currency row
-        // This needs to be implemented based on your layout
-        return .zero
+        return currencyRowRects["CurrencyRow-\(currency)"] ?? .zero
     }
 
     private func getRectForBaseCurrency() -> CGRect {
-        // Calculate and return the CGRect for the base currency capsule
-        // This needs to be implemented based on your layout
-        return .zero
+        return currencyRowRects["BaseCurrencyCapsule"] ?? .zero
     }
 }
 
@@ -162,6 +167,7 @@ struct CurrencyRowView: View {
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
                 .matchedGeometryEffect(id: currency, in: animationNamespace)
+                .identified(by: "CurrencyRow-\(currency)")
             Spacer()
             Text(amount, format: .currency(code: currency))
                 .font(.title3)
@@ -193,7 +199,7 @@ struct CurrencyAnimationOverlay: View {
                     .padding(.horizontal, 8)
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
                     .matchedGeometryEffect(id: currency, in: namespace)
-//                    .position(startRect.center(in: geometry.frame(in: .global)))
+                    .position(x: startRect.midX, y: startRect.midY)
                     .animation(.easeInOut(duration: 0.5), value: animationInProgress)
             }
         }
@@ -202,4 +208,34 @@ struct CurrencyAnimationOverlay: View {
 
 #Preview {
     CurrencyListView(viewModel: CurrencyConvertVM())
+}
+
+struct ViewIdentifierKey: PreferenceKey {
+    typealias Value = [String: CGRect]
+
+    static var defaultValue: [String: CGRect] = [:]
+
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
+    }
+}
+
+struct ViewIdentifier: ViewModifier {
+    let id: String
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                GeometryReader { proxy in
+                    Color.clear
+                        .preference(key: ViewIdentifierKey.self, value: [id: proxy.frame(in: .global)])
+                }
+            )
+    }
+}
+
+extension View {
+    func identified(by id: String) -> some View {
+        self.modifier(ViewIdentifier(id: id))
+    }
 }
