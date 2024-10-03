@@ -57,23 +57,25 @@ final class CurrencyConvertVM: ObservableObject {
     private func updateBaseCurrency(to currency: String, startRect: CGRect) {
         let newCurrency = currency
         let newValue = getValue(for: newCurrency)
-//        self.baseCurrency = newCurrency
+
         DispatchQueue.main.async {
-            withAnimation(.easeInOut(duration: 0.5)) {  // Increased duration to 1 second
+            withAnimation(.easeInOut(duration: 0.5)) {
                 self.animatedCurrency = currency
                 self.animationStartRect = startRect
                 self.animationInProgress = true
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {  // Increased delay to 1 second
-            withAnimation(.easeInOut(duration: 0.5)) {  // Increased duration to 1 second
-                self.baseCurrency = currency
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                self.baseCurrency = newCurrency
                 self.animatedCurrency = nil
                 self.animationInProgress = false
+                self.inputValue = "\(newValue)"
             }
         }
+        
         UserSettings.preferredCurrency = newCurrency
-        self.inputValue = "\(newValue)"
     }
     
     func isFavourite(currency: String) -> Bool {
@@ -105,12 +107,13 @@ final class CurrencyConvertVM: ObservableObject {
         let value = Double(inputValue) ?? 1.0
         return currencyService?.convert(from: baseCurrency, to: currency, value: value) ?? 0
     }
-    
 }
 
 extension CurrencyConvertVM: ExchangeRateSDKDelegate {
     @MainActor
     func updatedRatesAvailable() {
-        self.updateCurrencies()
+        DispatchQueue.main.async {
+            self.updateCurrencies()
+        }
     }
 }
