@@ -56,9 +56,6 @@ final class CurrencyConvertVM: ObservableObject {
     }
     
     private func updateBaseCurrency(to currency: String, startRect: CGRect) {
-        let newCurrency = currency
-        let newValue = getValue(for: newCurrency)
-
         DispatchQueue.main.async {
             withAnimation(.easeInOut(duration: 0.5)) {
                 self.animatedCurrency = currency
@@ -67,7 +64,7 @@ final class CurrencyConvertVM: ObservableObject {
             }
         }
         
-        UserSettings.preferredCurrency = newCurrency
+        UserSettings.preferredCurrency = currency
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.animationDidEnd()

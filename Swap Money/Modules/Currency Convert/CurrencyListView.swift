@@ -63,7 +63,7 @@ struct CurrencyListView: View {
 
                 // Show error message
                 if viewModel.showError {
-                    Text(viewModel.errorMessage ?? "Some error occured")
+                    Text(viewModel.errorMessage ?? "Some error occurred")
                         .foregroundColor(.red)
                         .font(.caption)
                         .padding(.horizontal, 20)
@@ -91,7 +91,8 @@ struct CurrencyListView: View {
                                 reverseCurrencyAction: {
                                     let startRect = getRectForCurrencyRow(currency: currency)
                                     viewModel.swapButtonTapped(for: currency, startRect: startRect)
-                                }, showSwapText: $showSwapText,
+                                },
+                                showSwapText: $showSwapText,
                                 animationNamespace: animationNamespace,
                                 isAnimatedCurrency: viewModel.animatedCurrency == currency
                             )
