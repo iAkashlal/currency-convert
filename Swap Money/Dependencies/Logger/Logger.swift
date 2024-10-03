@@ -15,9 +15,10 @@ enum LogLevel : String {
 }
 
 protocol Loggable {
-    func log(key: String, message: String, logLevel : LogLevel)
+    func log(key: String, message: String, logLevel : LogLevel, additionalParams: [String: Any]?)
     func readValue(key: String) -> String?
     func isLogged(exactMessage: String) -> Bool
+    func clearLogs()
 }
 
 final class BasicLogger: Loggable {
@@ -26,7 +27,7 @@ final class BasicLogger: Loggable {
                                                 attributes: .concurrent)
     private var logEvents: [String: Any] = [:]
     
-    func log(key: String, message: String, logLevel: LogLevel) {
+    func log(key: String, message: String, logLevel: LogLevel, additionalParams: [String: Any]?) {
         concurrentQueue.asyncAndWait(flags: .barrier, execute: {
             let timestamp = DateFormatter.localizedString(from: Date(),
                                                           dateStyle: .short, timeStyle: .long)
@@ -45,13 +46,17 @@ final class BasicLogger: Loggable {
     
     func isLogged(exactMessage: String) -> Bool {
         concurrentQueue.sync {
-            for (key, message) in logEvents {
+            for (_, message) in logEvents {
                 if let message = message as? String, message.contains(exactMessage) {
                     return true
                 }
             }
             return false
         }
+    }
+    
+    func clearLogs() {
+        self.logEvents.removeAll(keepingCapacity: false)
     }
 }
 
@@ -66,9 +71,10 @@ final class Logger {
         self.logger = logger
     }
     
-    func log(key: String = UUID().uuidString, message: String, logLevel : LogLevel = .info) {
-        self.logger.log(key: key, message: message, logLevel: logLevel)
+    func log(key: String = UUID().uuidString, message: String, logLevel : LogLevel = .info, additionalParams: [String: Any]? = nil) {
+        self.logger.log(key: key, message: message, logLevel: logLevel, additionalParams: additionalParams)
     }
+    
     func readValue(key: String) -> String? {
         self.logger.readValue(key: key)
     }
