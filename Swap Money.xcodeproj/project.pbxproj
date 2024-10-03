@@ -36,6 +36,7 @@
 		F8D5E1CD2CAC378F002FF2D3 /* ReverseCurrencyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */; };
 		F8D5E1CF2CAC37B6002FF2D3 /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */; };
 		F8D5E1D12CAEE985002FF2D3 /* FilePersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1D02CAEE985002FF2D3 /* FilePersistenceTests.swift */; };
+		F8D5E1D32CAEF823002FF2D3 /* PollingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1D22CAEF823002FF2D3 /* PollingServiceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseCurrencyButton.swift; sourceTree = "<group>"; };
 		F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersShape.swift; sourceTree = "<group>"; };
 		F8D5E1D02CAEE985002FF2D3 /* FilePersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePersistenceTests.swift; sourceTree = "<group>"; };
+		F8D5E1D22CAEF823002FF2D3 /* PollingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			children = (
 				F809AB932CAA8020007923B9 /* Swap_MoneyTests.swift */,
 				F8D5E1D02CAEE985002FF2D3 /* FilePersistenceTests.swift */,
+				F8D5E1D22CAEF823002FF2D3 /* PollingServiceTests.swift */,
 			);
 			path = "Swap MoneyTests";
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8D5E1D32CAEF823002FF2D3 /* PollingServiceTests.swift in Sources */,
 				F809AB942CAA8020007923B9 /* Swap_MoneyTests.swift in Sources */,
 				F8D5E1D12CAEE985002FF2D3 /* FilePersistenceTests.swift in Sources */,
 			);

@@ -30,7 +30,6 @@ class FilePersistenceTests: XCTestCase {
         XCTAssertEqual(savedValue, testValue, "The saved value should match the input value.")
     }
 
-    // Given no file exists, when restoreState is called, then it should return nil
     func testFilePersistence_givenNoFileExists_restoreState_shouldReturnNil() {
         // Given
         let filePersistence = FilePersistence<String>()
@@ -42,7 +41,6 @@ class FilePersistenceTests: XCTestCase {
         XCTAssertNil(restoredValue, "Restoring state should return nil when no file exists.")
     }
 
-    // Given a file exists, when clearState is called, then the file should be deleted
     func testFilePersistence_givenFileExists_clearState_shouldDeleteFile() {
         // Given
         let filePersistence = FilePersistence<String>()
@@ -57,7 +55,6 @@ class FilePersistenceTests: XCTestCase {
         XCTAssertNil(restoredValue, "The state should be cleared, and restoring should return nil.")
     }
 
-    // Given an invalid file path, when saveState is called, then it should fail silently and not save the state
     func testFilePersistence_givenInvalidFilePath_saveState_shouldFailSilently() {
         // Given
         let filePersistence = FilePersistence<String>()
