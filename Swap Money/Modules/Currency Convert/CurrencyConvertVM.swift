@@ -100,7 +100,8 @@ final class CurrencyConvertVM: ObservableObject {
 extension CurrencyConvertVM: ExchangeRateSDKDelegate {
     @MainActor
     func updatedRatesAvailable() {
-        self.updateCurrencies()
+        DispatchQueue.main.async {
+            self.updateCurrencies()
+        }
     }
-    
 }
