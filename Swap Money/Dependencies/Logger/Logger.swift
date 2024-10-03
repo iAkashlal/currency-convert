@@ -17,7 +17,7 @@ enum LogLevel : String {
 protocol Loggable {
     func log(key: String, message: String, logLevel : LogLevel, additionalParams: [String: Any]?)
     func readValue(key: String) -> String?
-    func isLogged(exactMessage: String) -> Bool
+    func isLogged(partOfMessage: String) -> Bool
     func clearLogs()
 }
 
@@ -44,10 +44,10 @@ final class BasicLogger: Loggable {
         return value
     }
     
-    func isLogged(exactMessage: String) -> Bool {
+    func isLogged(partOfMessage: String) -> Bool {
         concurrentQueue.sync {
             for (_, message) in logEvents {
-                if let message = message as? String, message.contains(exactMessage) {
+                if let message = message as? String, message.contains(partOfMessage) {
                     return true
                 }
             }
@@ -79,5 +79,12 @@ final class Logger {
         self.logger.readValue(key: key)
     }
     
+    func isLogged(partOfMessage: String) -> Bool {
+        self.logger.isLogged(partOfMessage: partOfMessage)
+    }
+    
+    func clearLogs() {
+        self.logger.clearLogs()
+    }
     
 }
