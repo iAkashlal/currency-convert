@@ -5,7 +5,7 @@ struct CurrencyListView: View {
 
     @Namespace private var animationNamespace
     @State private var showSwapText: Bool = true
-    @FocusState private var isInputFocused: Bool  // Focus state to control keyboard dismissal
+    @FocusState private var isInputFocused: Bool
 
     @State private var currencyRowRects: [String: CGRect] = [:]
 
@@ -14,10 +14,9 @@ struct CurrencyListView: View {
             VStack(spacing: 0) {
                 // Input Bar
                 HStack(spacing: 0) {
-                    // Input TextField
                     TextField("Enter amount", text: $viewModel.inputValue)
                         .keyboardType(.decimalPad)
-                        .focused($isInputFocused)  // Attach focus state to the TextField
+                        .focused($isInputFocused)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 8)
                         .onChange(of: viewModel.inputValue) { _ in
@@ -25,9 +24,9 @@ struct CurrencyListView: View {
                         }
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
-                                Spacer() // Push the Done button to the right
+                                Spacer()
                                 Button("Done") {
-                                    isInputFocused = false  // Dismiss the keyboard
+                                    isInputFocused = false
                                 }
                             }
                         }
@@ -41,7 +40,7 @@ struct CurrencyListView: View {
                                 .padding(.vertical, 5)
                                 .padding(.horizontal, 8)
                                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-                                .matchedGeometryEffect(id: animatedCurrency, in: animationNamespace, isSource: true)
+                                .matchedGeometryEffect(id: "currency-\(animatedCurrency)", in: animationNamespace, isSource: true)
                         }
 
                         Text(viewModel.baseCurrency)
@@ -51,13 +50,12 @@ struct CurrencyListView: View {
                             .padding(.horizontal, 8)
                             .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
                             .opacity(viewModel.animatedCurrency == nil ? 1 : 0)
-                            .identified(by: "BaseCurrencyCapsule")
+                            .matchedGeometryEffect(id: "baseCurrency-\(viewModel.baseCurrency)", in: animationNamespace)
                     }
-                    Spacer()
-                        .frame(width: 5)
+                    Spacer().frame(width: 5)
                 }
                 .background(Color(.systemGray6))
-                .clipShape(RoundedCornersShape(radius: 8, corners: [.topLeft, .bottomLeft, .topRight, .bottomRight])) // Round only left corners
+                .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
 
@@ -71,12 +69,10 @@ struct CurrencyListView: View {
                 }
 
                 if viewModel.isLoading {
-                    // Show loading spinner
                     ProgressView("Loading currencies...")
                         .padding(.top, 20)
                     Spacer()
                 } else {
-                    // List of currencies
                     List {
                         ForEach(viewModel.currencies, id: \.self) { currency in
                             CurrencyRowView(
@@ -98,7 +94,6 @@ struct CurrencyListView: View {
                             )
                             .identified(by: "CurrencyRow-\(currency)")
                         }
-                        .animation(.default, value: viewModel.currencies)
                     }
                     .padding(.top, 0)
                     .onAppear {
@@ -124,7 +119,7 @@ struct CurrencyListView: View {
                 )
             }
         }
-        .contentShape(Rectangle())  // Makes the entire VStack tappable
+        .contentShape(Rectangle())
         .onTapGesture {
             isInputFocused = false
         }
@@ -140,7 +135,7 @@ struct CurrencyListView: View {
     }
 
     private func getRectForBaseCurrency() -> CGRect {
-        return currencyRowRects["BaseCurrencyCapsule"] ?? .zero
+        return currencyRowRects["baseCurrency-\(viewModel.baseCurrency)"] ?? .zero
     }
 }
 
@@ -167,7 +162,7 @@ struct CurrencyRowView: View {
                 .padding(.vertical, 2)
                 .padding(.horizontal, 8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-                .matchedGeometryEffect(id: currency, in: animationNamespace, isSource: isAnimatedCurrency)
+                .matchedGeometryEffect(id: "currency-\(currency)", in: animationNamespace, isSource: isAnimatedCurrency)
                 .identified(by: "CurrencyRow-\(currency)")
             Spacer()
             Text(amount, format: .currency(code: currency))
@@ -179,7 +174,7 @@ struct CurrencyRowView: View {
             )
         }
         .padding(.vertical, 6)
-        .contentShape(Rectangle()) // This ensures that only the actual content is tappable, not the whole HStack by default.
+        .contentShape(Rectangle())
     }
 }
 
@@ -199,7 +194,7 @@ struct CurrencyAnimationOverlay: View {
                     .padding(.vertical, 5)
                     .padding(.horizontal, 8)
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.green))
-                    .matchedGeometryEffect(id: currency, in: namespace)
+                    .matchedGeometryEffect(id: "currency-\(currency)", in: namespace)
                     .position(x: startRect.midX, y: startRect.midY)
                     .animation(.easeInOut(duration: 0.5), value: animationInProgress)
             }
@@ -240,3 +235,4 @@ extension View {
         self.modifier(ViewIdentifier(id: id))
     }
 }
+
