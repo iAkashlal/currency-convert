@@ -1,11 +1,5 @@
-//
-//  CurrencyConvertVM.swift
-//  Swap Money
-//
-//  Created by Akashlal Bathe on 29/09/24.
-//
-
 import Foundation
+import SwiftUI
 
 @MainActor
 final class CurrencyConvertVM: ObservableObject {
@@ -17,7 +11,10 @@ final class CurrencyConvertVM: ObservableObject {
     @Published var showError: Bool = false // Track whether to show the error message
     @Published var errorMessage: String? = nil // Error message to display
     @Published var isLoading: Bool = true  // Track loading state
-    
+    @Published var animatedCurrency: String?
+    @Published var animationStartRect: CGRect = .zero
+    @Published var animationInProgress: Bool = false
+
     @Published var currencies: [String] = [] {
         didSet {
             self.isLoading = currencies.isEmpty
@@ -40,6 +37,7 @@ final class CurrencyConvertVM: ObservableObject {
     private func setup() {
         self.baseCurrency = UserSettings.preferredCurrency
         self.favourites = UserSettings.favouriteCurrencies
+        self.updateCurrencies()
     }
     
     // Check if input is a valid number
@@ -53,16 +51,32 @@ final class CurrencyConvertVM: ObservableObject {
         }
     }
     
-    func swapButtonTapped(for currency: String) {
-        self.updateBaseCurrency(to: currency)
+    func swapButtonTapped(for currency: String, startRect: CGRect) {
+        self.updateBaseCurrency(to: currency, startRect: startRect)
     }
     
-    private func updateBaseCurrency(to currency: String) {
-        let newCurrency = currency
-        let newValue = getValue(for: newCurrency)
-        self.baseCurrency = newCurrency
-        UserSettings.preferredCurrency = newCurrency
-        self.inputValue = "\(newValue)"
+    private func updateBaseCurrency(to currency: String, startRect: CGRect) {
+        DispatchQueue.main.async {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                self.animatedCurrency = currency
+                self.animationStartRect = startRect
+                self.animationInProgress = true
+            }
+        }
+        
+        UserSettings.preferredCurrency = currency
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.animationDidEnd()
+        }
+    }
+    
+    func animationDidEnd() {
+        guard let animatedCurrency = self.animatedCurrency else { return }
+        self.inputValue = "\(getValue(for: animatedCurrency))"
+        self.baseCurrency = animatedCurrency
+        self.animatedCurrency = nil
+        self.animationInProgress = false
     }
     
     func isFavourite(currency: String) -> Bool {
@@ -83,7 +97,7 @@ final class CurrencyConvertVM: ObservableObject {
     @MainActor
     func updateCurrencies() {
         guard let service = currencyService else { return }
-        var currencies = service.currenciesAvailable().filter{ !self.favourites.contains($0) }
+        var currencies = service.currenciesAvailable().filter { !self.favourites.contains($0) }
         self.favourites.reversed().forEach {
             currencies.insert($0, at: 0)
         }
@@ -94,7 +108,6 @@ final class CurrencyConvertVM: ObservableObject {
         let value = Double(inputValue) ?? 1.0
         return currencyService?.convert(from: baseCurrency, to: currency, value: value) ?? 0
     }
-    
 }
 
 extension CurrencyConvertVM: ExchangeRateSDKDelegate {
