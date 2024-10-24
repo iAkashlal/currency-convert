@@ -32,6 +32,9 @@
 		F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906902CAB19110034AA3C /* LocalPersistence.swift */; };
 		F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */; };
 		F84906962CAB22A30034AA3C /* PollingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84906952CAB22A30034AA3C /* PollingService.swift */; };
+		F851D8BD2CBA7D860096B801 /* TripsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851D8BC2CBA7D860096B801 /* TripsVM.swift */; };
+		F851D8C02CBA7DC90096B801 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851D8BF2CBA7DC90096B801 /* Trip.swift */; };
+		F851D8C22CBA7F560096B801 /* TripsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851D8C12CBA7F560096B801 /* TripsList.swift */; };
 		F8D5E1CB2CAC3778002FF2D3 /* PinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CA2CAC3778002FF2D3 /* PinButton.swift */; };
 		F8D5E1CD2CAC378F002FF2D3 /* ReverseCurrencyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */; };
 		F8D5E1CF2CAC37B6002FF2D3 /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */; };
@@ -83,6 +86,9 @@
 		F84906902CAB19110034AA3C /* LocalPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistence.swift; sourceTree = "<group>"; };
 		F84906922CAB19220034AA3C /* UserDefaultPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultPersistence.swift; sourceTree = "<group>"; };
 		F84906952CAB22A30034AA3C /* PollingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingService.swift; sourceTree = "<group>"; };
+		F851D8BC2CBA7D860096B801 /* TripsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsVM.swift; sourceTree = "<group>"; };
+		F851D8BF2CBA7DC90096B801 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		F851D8C12CBA7F560096B801 /* TripsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsList.swift; sourceTree = "<group>"; };
 		F8D5E1CA2CAC3778002FF2D3 /* PinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinButton.swift; sourceTree = "<group>"; };
 		F8D5E1CC2CAC378F002FF2D3 /* ReverseCurrencyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseCurrencyButton.swift; sourceTree = "<group>"; };
 		F8D5E1CE2CAC37B6002FF2D3 /* RoundedCornersShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersShape.swift; sourceTree = "<group>"; };
@@ -136,6 +142,7 @@
 		F809AB7C2CAA801F007923B9 /* Swap Money */ = {
 			isa = PBXGroup;
 			children = (
+				F851D8BE2CBA7DC20096B801 /* Models */,
 				F809ABE62CAA8301007923B9 /* Dependencies */,
 				F809ABAC2CAA8067007923B9 /* App */,
 				F809ABCA2CAA809E007923B9 /* Modules */,
@@ -195,6 +202,8 @@
 		F809ABCA2CAA809E007923B9 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				F851D8B92CBA7CAA0096B801 /* Trips */,
+				F851D8B82CBA7C910096B801 /* Trip Onboarding */,
 				F809ABC92CAA809E007923B9 /* Onboarding */,
 				F809ABC52CAA809E007923B9 /* Currency Convert */,
 			);
@@ -306,6 +315,30 @@
 				F84906952CAB22A30034AA3C /* PollingService.swift */,
 			);
 			path = Polling;
+			sourceTree = "<group>";
+		};
+		F851D8B82CBA7C910096B801 /* Trip Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Trip Onboarding";
+			sourceTree = "<group>";
+		};
+		F851D8B92CBA7CAA0096B801 /* Trips */ = {
+			isa = PBXGroup;
+			children = (
+				F851D8BC2CBA7D860096B801 /* TripsVM.swift */,
+				F851D8C12CBA7F560096B801 /* TripsList.swift */,
+			);
+			path = Trips;
+			sourceTree = "<group>";
+		};
+		F851D8BE2CBA7DC20096B801 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F851D8BF2CBA7DC90096B801 /* Trip.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F8D5E1C92CAC3763002FF2D3 /* Components */ = {
@@ -448,11 +481,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F851D8BD2CBA7D860096B801 /* TripsVM.swift in Sources */,
 				F849068D2CAA913A0034AA3C /* UserDefaultHelper.swift in Sources */,
 				F809ABF72CAA84C1007923B9 /* Coordinator.swift in Sources */,
 				F809ABCE2CAA809E007923B9 /* OnboardingCoordinator.swift in Sources */,
 				F84906912CAB19110034AA3C /* LocalPersistence.swift in Sources */,
 				F809AB7E2CAA801F007923B9 /* AppDelegate.swift in Sources */,
+				F851D8C22CBA7F560096B801 /* TripsList.swift in Sources */,
 				F8D5E1CD2CAC378F002FF2D3 /* ReverseCurrencyButton.swift in Sources */,
 				F84906932CAB19220034AA3C /* UserDefaultPersistence.swift in Sources */,
 				F8D5E1CF2CAC37B6002FF2D3 /* RoundedCornersShape.swift in Sources */,
@@ -466,6 +501,7 @@
 				F809ABCF2CAA809E007923B9 /* OnboardingView.swift in Sources */,
 				F809ABEA2CAA8301007923B9 /* OpenExchangeRateAPI.swift in Sources */,
 				F809ABEC2CAA8301007923B9 /* Logger.swift in Sources */,
+				F851D8C02CBA7DC90096B801 /* Trip.swift in Sources */,
 				F809ABE82CAA8301007923B9 /* NetworkRequest.swift in Sources */,
 				F809ABCD2CAA809E007923B9 /* CurrencyListView.swift in Sources */,
 				F809ABE92CAA8301007923B9 /* NetworkService.swift in Sources */,
